@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <input type="text" id="roomName" />
+    <button id="test">test</button>
+    <script>
+      class WebsocketAction {
+        constructor() {
+          this.ws = null;
+        }
+        connect() {
+          this.ws = new WebSocket("ws://localhost:8765");
+          this.ws.onopen = () => {
+            console.log("Connected.");
+          };
+          this.ws.onmessage = (event) => {
+            console.log(event.data);
+          };
+          this.ws.onclose = (event) => {
+            console.log("Socket is closed. 再接続します。", event.reason);
+            this.connect(this.roomName);
+          };
+
+          this.ws.onerror = (event) => {
+            console.error(event.message);
+            this.ws.close();
+            alert("接続に失敗しました。");
+          };
+        }
+      }
+
+      const ws = new WebsocketAction();
+      ws.connect();
+      document.getElementById("test").addEventListener("click", () => {
+        ws.ws.send(document.getElementById("roomName").value);
+      });
+    </script>
+  </body>
+</html>
