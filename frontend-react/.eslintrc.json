@@ -10,6 +10,7 @@
     "react/react-in-jsx-scope": "off",
     "react/self-closing-comp": "error",
     "multiline-ternary": "off",
+    "no-var": "error",
     "import/order": [
       "error",
       {

@@ -10,9 +10,7 @@ function init() {
   const height = 540;
 
   // レンダラーを作成
-  const canvasElement = document.querySelector(
-    "#myCanvas"
-  ) as HTMLCanvasElement;
+  const canvasElement = document.querySelector("#myCanvas") as HTMLCanvasElement;
   const renderer = new THREE.WebGLRenderer({
     canvas: canvasElement,
   });

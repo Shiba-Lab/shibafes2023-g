@@ -153,6 +153,8 @@ $ npm i
 VScodeでは自動的にルールに合っているか解析+ルールに合ったように整形を行うことができるため、以下の拡張機能をインストールしてください。
 VScodeのユーザー設定は`.vscode`ディレクトリ内に定義済みのため特に変える必要はない(はず)です。
 
+**重要 適切にeslintの設定を読み込むためには、`shibafes2023-g`をVSCodeで開くのではなく`frontend-react`を開く必要があることに注意してください**
+
 - [prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
 - [eslint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
 
