@@ -1,6 +1,4 @@
 module.exports = {
-  // モード値を production に設定すると最適化された状態で、
-  // development に設定するとソースマップ有効でJSファイルが出力される
   mode: "production",
 
   // メインとなるJavaScriptファイル（エントリーポイント）
@@ -25,5 +23,12 @@ module.exports = {
   // import 文で .ts ファイルを解決するため
   resolve: {
     extensions: [".ts", ".js"],
+  },
+  // serverの設定
+  devServer: {
+    static: {
+      directory: "./dist", // 出力ディレクトリ
+    },
+    open: true, // 自動でブラウザを開く
   },
 };

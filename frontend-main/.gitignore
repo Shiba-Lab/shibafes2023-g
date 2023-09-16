@@ -2,3 +2,4 @@
 /dist/*.js
 /dist/*.LICENSE.txt
 /dist/main.js.LICENSE.txt
+/package-lock.json
