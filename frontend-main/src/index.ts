@@ -5,6 +5,7 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 window.addEventListener("DOMContentLoaded", init);
 
 function init() {
+  console.log("init");
   // サイズを指定
   const width = 960;
   const height = 540;
