@@ -1,0 +1,12 @@
+version: '3'
+services:
+  python3:
+    restart: always
+    build: .
+    container_name: python3-dev
+    working_dir: /root/src
+    tty: true
+    volumes:
+      - ./src:/root/src
+    ports:
+      - 8080:8080
