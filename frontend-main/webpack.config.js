@@ -1,5 +1,6 @@
 module.exports = {
-  mode: "production",
+  // mode: "production",
+  mode: "development",
 
   // メインとなるJavaScriptファイル（エントリーポイント）
   entry: "./src/index.ts",

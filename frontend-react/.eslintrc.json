@@ -11,6 +11,7 @@
     "react/self-closing-comp": "error",
     "multiline-ternary": "off",
     "no-var": "error",
+    "no-unused-vars": "error",
     "import/order": [
       "error",
       {

@@ -9,6 +9,7 @@ const Sketch = dynamic(import("react-p5"), {
 export const SketchComponent = () => {
   const preload = (p5: p5Types) => {
     // ここは今回使わない
+    console.log(p5);
   };
 
   const setup = (p5: p5Types, canvasParentRef: Element) => {
