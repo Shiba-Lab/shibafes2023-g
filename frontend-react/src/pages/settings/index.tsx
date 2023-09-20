@@ -1,27 +1,64 @@
-import { Box, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Container,
+  Text,
+  VStack,
+  useToast,
+} from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import { Setup } from "@/components/settings/setup";
+import { FullScreen, useFullScreenHandle } from "react-full-screen";
+import { Canvas } from "@/components/settings/canvas";
 
 // type role = "canvas" | "user" | "admin";
 // type state = "not_connected" | "connecting" | "connected";
 type pageType = "setup" | "canvas" | "user" | "admin";
 
 const Settings = () => {
+  const toast = useToast();
+  const fullscreenHandle = useFullScreenHandle();
+
   const [pageType, setPageType] = useState<pageType>("setup");
+  const [id, setId] = useState<string>();
 
   const [socketUrl, setSocketUrl] = useState("ws://localhost:8765");
   const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket(
     socketUrl,
     {
-      onOpen: () => console.log("opened"),
+      onOpen: () =>
+        toast({
+          title: "Connected",
+          status: "success",
+          description: "now connected to: " + socketUrl,
+          duration: 8000,
+          isClosable: true,
+        }),
+      onClose: () => {
+        if (id)
+          toast({
+            title: "Disconnected",
+            status: "warning",
+            duration: 3000,
+            isClosable: true,
+            description: "disconnected from: " + socketUrl,
+          });
+      },
       shouldReconnect: (closeEvent) => {
         console.log(closeEvent);
+        toast({
+          title: "COULD NOT CONNECT",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+          description:
+            "failed to connect: " + socketUrl + ". Is the server running?",
+        });
         return true;
       },
     },
   );
-  const [id, setId] = useState<string>();
 
   const connectionStatus = {
     [ReadyState.CONNECTING]: "Connecting",
@@ -35,9 +72,13 @@ const Settings = () => {
     console.log(lastJsonMessage);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const message = lastJsonMessage as any;
+
+    // 初回セットアップ
     if (message?.type === "setup") {
       setPageType(message.role);
       setId(message.id);
+      // canvasだったら自分のデータ送信
+      // adiminだったら全データ取得
     }
   }, [lastJsonMessage]);
 
@@ -46,15 +87,17 @@ const Settings = () => {
       <Setup
         sendJsonMessage={sendJsonMessage}
         setSocketUrl={setSocketUrl}
+        connectionStatus={connectionStatus}
         id={id}
       />
     );
   if (pageType === "canvas")
     return (
-      <Box>
-        <Text>{connectionStatus}</Text>
-        <Text>{String(lastJsonMessage)}</Text>
-      </Box>
+      <Canvas
+        fullscreenHandle={fullscreenHandle}
+        id={id}
+        sendJsonMessage={sendJsonMessage}
+      />
     );
   if (pageType === "user") return <Box>user</Box>;
   if (pageType === "admin") return <Box>admin</Box>;
