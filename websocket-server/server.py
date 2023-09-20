@@ -11,30 +11,30 @@ screens = []  # screenを管理するリスト
 
 
 async def echo(websocket, path):
-
     # 新しいクライアントにIDを割り当て、辞書に追加
     # client_id = uuid.uuid4()
     # clients[client_id]['websocket'] = websocket
 
     # クライアントにそのIDを送信
     # クライアントのIPとポートをコンソールに出力
-    # print(f"Connected client: {websocket.remote_address}")
+    print(f"Connected client: {websocket.remote_address}")
     # await websocket.send(f"Hello from server ID:{websocket.remote_address}")
     # await websocket.send(f"Your ID is: {client_id}")
 
     try:
         async for message in websocket:
+            print(message)
             # messageをparse
             data = json.loads(message)
             # messageによって分岐
             if data['type'] == 'setup':
-                print(data)
+                # print(data)
                 if data.get('id') == None:
                     # idがない場合は新規接続なので、辞書に追加
                     client_id = str(uuid.uuid4())
                     clients[client_id] = {
                         'websocket': websocket, 'role': data['role']}
-                    result = {'type': 'setup', 'id': client_id}
+                    result = {'type': 'setup', 'id': client_id, 'role': data['role']}
                     await websocket.send(json.dumps(result))
                 else:
                     # idがある場合は再接続なので、辞書を更新
