@@ -14,6 +14,7 @@
     "no-var": "error",
     "no-unused-vars": "off",
     "@typescript-eslint/no-unused-vars": ["error"],
+    "max-len": ["error", 140],
     "import/order": [
       "error",
       {

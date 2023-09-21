@@ -1,16 +1,9 @@
-import {
-  Box,
-  Button,
-  Container,
-  Text,
-  VStack,
-  useToast,
-} from "@chakra-ui/react";
+import { Box, useToast } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
+import { useFullScreenHandle } from "react-full-screen";
 import useWebSocket, { ReadyState } from "react-use-websocket";
-import { Setup } from "@/components/settings/setup";
-import { FullScreen, useFullScreenHandle } from "react-full-screen";
 import { Canvas } from "@/components/settings/canvas";
+import { Setup } from "@/components/settings/setup";
 
 // type role = "canvas" | "user" | "admin";
 // type state = "not_connected" | "connecting" | "connected";
