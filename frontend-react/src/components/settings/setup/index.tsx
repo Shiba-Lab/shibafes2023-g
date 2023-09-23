@@ -8,7 +8,6 @@ import {
   Icon,
   Flex,
 } from "@chakra-ui/react";
-import { useState } from "react";
 import { AiOutlineCheck } from "react-icons/ai";
 
 type Props = {
@@ -17,10 +16,12 @@ type Props = {
   setSocketUrl: (url: string) => void;
   id: string | undefined;
   connectionStatus: string;
+  role: "canvas" | "admin" | "user";
+  setRole: (role: string) => void;
 };
 
 export const Setup = (props: Props) => {
-  const { sendJsonMessage, setSocketUrl, id } = props;
+  const { sendJsonMessage, setSocketUrl, id, role, setRole } = props;
 
   const startConnect = () => {
     sendJsonMessage({
@@ -30,7 +31,6 @@ export const Setup = (props: Props) => {
     });
   };
 
-  const [role, setRole] = useState<"canvas" | "admin" | "user">("canvas");
   return (
     <Container>
       <VStack spacing={5} w="100%">

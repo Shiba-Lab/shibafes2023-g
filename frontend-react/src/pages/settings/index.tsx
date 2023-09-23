@@ -5,29 +5,34 @@ import useWebSocket, { ReadyState } from "react-use-websocket";
 import { Canvas } from "@/components/settings/canvas";
 import { Setup } from "@/components/settings/setup";
 
-// type role = "canvas" | "user" | "admin";
+export type Role = "canvas" | "user" | "admin";
 // type state = "not_connected" | "connecting" | "connected";
-type pageType = "setup" | "canvas" | "user" | "admin";
+type PageType = "setup" | "canvas" | "user" | "admin";
 
 const Settings = () => {
   const toast = useToast();
   const fullscreenHandle = useFullScreenHandle();
 
-  const [pageType, setPageType] = useState<pageType>("setup");
+  const [pageType, setPageType] = useState<PageType>("setup");
   const [id, setId] = useState<string>();
+  const [role, setRole] = useState<Role>("canvas");
 
   const [socketUrl, setSocketUrl] = useState("ws://localhost:8765");
   const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket(
     socketUrl,
     {
-      onOpen: () =>
+      onOpen: () => {
         toast({
           title: "Connected",
           status: "success",
           description: "now connected to: " + socketUrl,
           duration: 8000,
           isClosable: true,
-        }),
+        });
+        if (id) {
+          // idを再送信したい
+        }
+      },
       onClose: () => {
         if (id)
           toast({
@@ -72,6 +77,10 @@ const Settings = () => {
       setId(message.id);
       // canvasだったら自分のデータ送信
       // adiminだったら全データ取得
+    } else if (message?.type === "check_reconnect") {
+      if (id) {
+        sendJsonMessage({ type: "reconnect", id: id, role: role });
+      }
     }
   }, [lastJsonMessage]);
 
@@ -81,6 +90,8 @@ const Settings = () => {
         sendJsonMessage={sendJsonMessage}
         setSocketUrl={setSocketUrl}
         connectionStatus={connectionStatus}
+        role={role}
+        setRole={setRole}
         id={id}
       />
     );
