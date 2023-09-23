@@ -1,11 +1,22 @@
-import { Box, Button, Select, Text, Container, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Select,
+  Text,
+  Container,
+  VStack,
+  Icon,
+  Flex,
+} from "@chakra-ui/react";
 import { useState } from "react";
+import { AiOutlineCheck } from "react-icons/ai";
 
 type Props = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   sendJsonMessage: (data: any) => void;
   setSocketUrl: (url: string) => void;
   id: string | undefined;
+  connectionStatus: string;
 };
 
 export const Setup = (props: Props) => {
@@ -26,6 +37,19 @@ export const Setup = (props: Props) => {
         <Text fontSize="2xl" mt={3}>
           Settings
         </Text>
+        <Flex alignItems="center" justifyContent="center">
+          {props.connectionStatus === "Open" ? (
+            <Icon
+              as={AiOutlineCheck}
+              color="green.500"
+              width="2em"
+              height="1em"
+            />
+          ) : (
+            ""
+          )}
+          <Text lineHeight="1em">{props.connectionStatus}</Text>
+        </Flex>
         <Box w="100%">
           <Text>Select server</Text>
           <Select onChange={(e) => setSocketUrl(e.target.value)}>
