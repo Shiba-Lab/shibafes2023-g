@@ -11,19 +11,13 @@ screens = []  # screenを管理するリスト
 
 
 async def echo(websocket, path):
-    # 新しいクライアントにIDを割り当て、辞書に追加
-    # client_id = uuid.uuid4()
-    # clients[client_id]['websocket'] = websocket
-
-    # クライアントにそのIDを送信
-    # クライアントのIPとポートをコンソールに出力
     print(f"Connected client: {websocket.remote_address}")
-    # await websocket.send(f"Hello from server ID:{websocket.remote_address}")
-    # await websocket.send(f"Your ID is: {client_id}")
+    # 再接続かどうか問い合わせる
+    await websocket.send(json.dumps({'type': 'check_reconnect'}))
 
     try:
         async for message in websocket:
-            print(message)
+            print("message:", message)
             # messageをparse
             data = json.loads(message)
             # messageによって分岐
@@ -39,6 +33,12 @@ async def echo(websocket, path):
                 else:
                     # idがある場合は再接続なので、辞書を更新
                     clients[data['id']]['websocket'] = websocket
+            elif data['type'] == 'reconnect':
+                # 再接続の場合は辞書を更新
+                if data['id'] in clients:
+                    clients[data['id']]['websocket'] = websocket
+                else:
+                    clients[data['id']] = {'websocket': websocket, 'role': data['role']}
             else:
                 print(data)
             # 特定のクライアントにメッセージを送信する指示がある場合
