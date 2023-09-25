@@ -8,7 +8,9 @@ import {
   Icon,
   Flex,
 } from "@chakra-ui/react";
+import { Dispatch, SetStateAction } from "react";
 import { AiOutlineCheck } from "react-icons/ai";
+import type { Role } from "@/types";
 
 type Props = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -17,7 +19,7 @@ type Props = {
   id: string | undefined;
   connectionStatus: string;
   role: "canvas" | "admin" | "user";
-  setRole: (role: string) => void;
+  setRole: Dispatch<SetStateAction<Role>>;
 };
 
 export const Setup = (props: Props) => {

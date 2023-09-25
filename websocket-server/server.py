@@ -28,7 +28,8 @@ async def echo(websocket, path):
                     client_id = str(uuid.uuid4())
                     clients[client_id] = {
                         'websocket': websocket, 'role': data['role']}
-                    result = {'type': 'setup', 'id': client_id, 'role': data['role']}
+                    result = {'type': 'setup',
+                              'id': client_id, 'role': data['role']}
                     await websocket.send(json.dumps(result))
                 else:
                     # idがある場合は再接続なので、辞書を更新
@@ -38,7 +39,8 @@ async def echo(websocket, path):
                 if data['id'] in clients:
                     clients[data['id']]['websocket'] = websocket
                 else:
-                    clients[data['id']] = {'websocket': websocket, 'role': data['role']}
+                    clients[data['id']] = {
+                        'websocket': websocket, 'role': data['role']}
             else:
                 print(data)
             # 特定のクライアントにメッセージを送信する指示がある場合

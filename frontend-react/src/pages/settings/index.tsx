@@ -4,10 +4,7 @@ import { useFullScreenHandle } from "react-full-screen";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import { Canvas } from "@/components/settings/canvas";
 import { Setup } from "@/components/settings/setup";
-
-export type Role = "canvas" | "user" | "admin";
-// type state = "not_connected" | "connecting" | "connected";
-type PageType = "setup" | "canvas" | "user" | "admin";
+import type { Role, PageType } from "@/types";
 
 const Settings = () => {
   const toast = useToast();
