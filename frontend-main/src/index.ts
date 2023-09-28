@@ -6,7 +6,7 @@ import { helloworld } from "./helloworld";
 const init = () => {
   helloworld();
 
-  console.log("Test");
+  console.log("芝浦工業大学");
 
   // サイズを指定
   const width = 960;
