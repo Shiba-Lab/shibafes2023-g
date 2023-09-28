@@ -5,6 +5,9 @@ import { helloworld } from "./helloworld";
 
 const init = () => {
   helloworld();
+
+  console.log("Test");
+
   // サイズを指定
   const width = 960;
   const height = 540;
