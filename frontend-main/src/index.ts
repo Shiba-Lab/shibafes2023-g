@@ -1,11 +1,10 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
-// ページの読み込みを待つ
-window.addEventListener("DOMContentLoaded", init);
+import { helloworld } from "./helloworld";
 
-function init() {
-  console.log("init");
+const init = () => {
+  helloworld();
   // サイズを指定
   const width = 960;
   const height = 540;
@@ -48,12 +47,15 @@ function init() {
     scene.add(model);
   });
 
-  tick();
-
   // 毎フレーム時に実行されるループイベントです
-  function tick() {
+  const tick = () => {
     // レンダリング
     renderer.render(scene, camera);
     requestAnimationFrame(tick);
-  }
-}
+  };
+
+  tick();
+};
+
+// ページの読み込みを待つ
+window.addEventListener("DOMContentLoaded", init);
