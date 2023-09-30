@@ -6,25 +6,13 @@
 import * as THREE from "three";
 
 export class flowerCluster {
-  private flowerOrigin: THREE.Vector3;
-  private flowerNumber: number;
-  private flowerClusterMaxRadius: number;
-  private flowerSizeOfMin: number;
-  private flowerSizeOfMax: number;
-
   constructor(
-    flowerOrigin: THREE.Vector3,
-    flowerNumber: number,
-    flowerClusterMaxRadius: number,
-    flowerSizeOfMin: number,
-    flowerSizeOfMax: number
-  ) {
-    this.flowerOrigin = flowerOrigin;
-    this.flowerNumber = flowerNumber;
-    this.flowerClusterMaxRadius = flowerClusterMaxRadius;
-    this.flowerSizeOfMin = flowerSizeOfMin;
-    this.flowerSizeOfMax = flowerSizeOfMax;
-  }
+    private flowerOrigin: THREE.Vector3,
+    private flowerNumber: number,
+    private flowerClusterMaxRadius: number,
+    private flowerSizeOfMin: number,
+    private flowerSizeOfMax: number
+  ) {}
 
   //花の座標を取得する(ランダム)
   getCoordinates(): THREE.Vector3[] {
@@ -34,8 +22,8 @@ export class flowerCluster {
       let y = 0;
       let z = 0;
 
-      const radius = Math.random() * (this.flowerClusterMaxRadius - 0) + 0;
-      const radial = Math.random() * (2 * Math.PI - 0) + 0;
+      const radius = Math.random() * this.flowerClusterMaxRadius;
+      const radial = Math.random() * (2 * Math.PI);
 
       x = radius * Math.cos(radial);
       y = Math.random() * (10 - -10) + -10; //y軸方向のずれのランダム性の設定

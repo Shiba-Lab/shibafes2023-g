@@ -1,9 +1,6 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { flowerCluster } from "./flowerCluster";
-//今のところ使わないのでコメント化
-//import { helloworld } from "./helloworld";
-//import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
 const init = () => {
   // サイズを指定
