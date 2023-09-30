@@ -26,7 +26,7 @@ export class flowerCluster {
       const radial = Math.random() * (2 * Math.PI);
 
       x = radius * Math.cos(radial);
-      y = Math.random() * (10 - -10) + -10; //y軸方向のずれのランダム性の設定
+      y = Math.random() * 20 - 10; //y軸方向のずれのランダム性の設定
       z = radius * Math.sin(radial);
 
       const flowerVectorFromOrigin = new THREE.Vector3(x, y, z); //方向ベクトルを配列化
@@ -54,7 +54,7 @@ export class flowerCluster {
     const euler: THREE.Euler[] = [];
     for (let i = 0; i < this.flowerNumber; i++) {
       const x: number = 0;
-      const y: number = Math.random() * (2 * Math.PI - 0) + 0;
+      const y: number = Math.random() * 2 * Math.PI;
       const z: number = 0;
 
       euler.push(new THREE.Euler(x, y, z));
