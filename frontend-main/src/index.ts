@@ -1,9 +1,13 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
-//import { generateNumber } from "./util";後で使います
+import { randomizeAnimationStartFrame } from "./gltfAnimation";
+//import { generateNumber } from "./util";
 import { flowerCluster } from "./flowerCluster";
 
 const init = () => {
+  //花の個数などを設定
+  const flowerNumber = 5;
+
   // サイズを指定
   const width = 960;
   const height = 540;
@@ -38,10 +42,10 @@ const init = () => {
   scene.add(ambientLight);
 
   //モデルの座標、大きさ、回転の情報の生成(テスト用)
-  const flowerClusterTransform = new flowerCluster(new THREE.Vector3(0, 0, 0), 1, 2, 1, 5);
+  const flowerClusterTransform = new flowerCluster(new THREE.Vector3(0, 0, 0), flowerNumber, 10, 1, 5);
   const flowerClusterCoordinate: THREE.Vector3[] = flowerClusterTransform.getCoordinates();
   const flowerClusterRotation: THREE.Euler[] = flowerClusterTransform.getEuler();
-  const flowerClusterSize: number[] = flowerClusterTransform.getSize();
+  const flowerClusterScale: number[] = flowerClusterTransform.getScale();
 
   //GLTFのファイルパスを格納
   const flowerModelsFilePath: string[] = [];
@@ -50,31 +54,72 @@ const init = () => {
   // GLTF形式のモデルデータを読み込む
   const loader = new GLTFLoader();
   //アニメーションミキサーの作成
-  let mixer: THREE.AnimationMixer;
-  // GLTFファイルを読み込みシーンに追加する
+  const mixers: THREE.AnimationMixer[] = [];
+
+  // GLTFファイルを読み込み処理を行う
   loader.load(flowerModelsFilePath[0], (gltf) => {
-    // 読み込み後にモデルのデータを格納
-    const model = gltf.scene;
-    scene.add(model);
+    for (let i = 0; i < flowerNumber; i++) {
+      // 読み込み後にモデルのデータを格納
+      const model = gltf.scene.clone();
+      scene.add(model);
 
-    //モデルの座標や大きさ、回転を変化(クラスの動作確認用、後で消す)
-    model.position.copy(flowerClusterCoordinate[0]);
-    model.rotation.copy(flowerClusterRotation[0]);
-    model.scale.set(flowerClusterSize[0], flowerClusterSize[0], flowerClusterSize[0]);
+      //モデルの座標や大きさ、回転を変化
+      model.position.copy(flowerClusterCoordinate[i]);
+      model.rotation.copy(flowerClusterRotation[i]);
+      model.scale.set(flowerClusterScale[i], flowerClusterScale[i], flowerClusterScale[i]);
 
-    //ミキサーにクリップを追加
-    mixer = new THREE.AnimationMixer(model);
-    gltf.animations.forEach((clip) => {
-      mixer.clipAction(clip).play();
-    });
+      // 各アニメーションの開始フレームをずらす値
+      //const animationStartFrameOffset = generateNumber.getRandomInt(0, 60) / 60;
+
+      // アニメーションクリップを取得
+      const originalClip = gltf.animations[0]; // 適切なアニメーションクリップを選択
+
+      // クローンしたシーンごとにアニメーションを設定
+      model.traverse((child) => {
+        if (child instanceof THREE.Mesh) {
+          const mixer = new THREE.AnimationMixer(child);
+          const modifiedClip = randomizeAnimationStartFrame(originalClip);
+          const action = mixer.clipAction(modifiedClip);
+          action.play();
+          // ミキサーを保存
+          mixers.push(mixer);
+        }
+      });
+
+      /*
+      gltf.animations.forEach((clip) => {
+
+        // アニメーションクリップの開始フレームをずらす
+        clip.tracks.forEach((track) => {
+          if (track.times) {
+            for (let j = 0; j < track.times.length; j++) {
+              track.times[j] += animationStartFrameOffset;
+            }
+          }
+        });
+
+        // アニメーションアクションを作成
+        const mixer = new THREE.AnimationMixer(model);
+        const action = mixer.clipAction(clip);
+
+        // アクションを再生
+        action.play();
+
+        // ミキサーを保存
+        mixers.push(mixer);
+      });
+      */
+    }
   });
 
   const animate = () => {
     requestAnimationFrame(animate);
     // アニメーションミキサーを更新
-    if (mixer) {
+    if (mixers) {
       // 進行速度を調整するための値を指定
-      mixer.update(0.01);
+      mixers.forEach((mixer) => {
+        mixer.update(0.01); // フレームごとの更新
+      });
     }
     //レンダリング
     renderer.render(scene, camera);

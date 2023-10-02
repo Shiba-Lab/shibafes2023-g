@@ -38,7 +38,7 @@ export class flowerCluster {
   }
 
   //花のサイズを取得する(ランダム)
-  getSize(): number[] {
+  getScale(): number[] {
     const size: number[] = [];
 
     for (let i = 0; i < this.flowerNumber; i++) {
