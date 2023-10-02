@@ -4,6 +4,7 @@
 */
 
 import * as THREE from "three";
+import { generateNumber } from "./util";
 
 export class flowerCluster {
   constructor(
@@ -22,11 +23,11 @@ export class flowerCluster {
       let y = 0;
       let z = 0;
 
-      const radius = Math.random() * this.flowerClusterMaxRadius;
-      const radial = Math.random() * (2 * Math.PI);
+      const radius = generateNumber.getRandomNumber(0, this.flowerClusterMaxRadius);
+      const radial = generateNumber.getRandomNumber(0, 2 * Math.PI);
 
       x = radius * Math.cos(radial);
-      y = Math.random() * 20 - 10; //y軸方向のずれのランダム性の設定
+      y = generateNumber.getRandomNumber(-10, 10); //y軸方向のずれのランダム性の設定
       z = radius * Math.sin(radial);
 
       const flowerVectorFromOrigin = new THREE.Vector3(x, y, z); //方向ベクトルを配列化
@@ -41,7 +42,7 @@ export class flowerCluster {
     const size: number[] = [];
 
     for (let i = 0; i < this.flowerNumber; i++) {
-      const randomSize = Math.random() * (this.flowerSizeOfMax - this.flowerSizeOfMin) + this.flowerSizeOfMin;
+      const randomSize = generateNumber.getRandomNumber(this.flowerSizeOfMin, this.flowerSizeOfMax);
       size.push(randomSize);
     }
 
@@ -54,7 +55,7 @@ export class flowerCluster {
     const euler: THREE.Euler[] = [];
     for (let i = 0; i < this.flowerNumber; i++) {
       const x: number = 0;
-      const y: number = Math.random() * 2 * Math.PI;
+      const y: number = generateNumber.getRandomNumber(0, 2 * Math.PI);
       const z: number = 0;
 
       euler.push(new THREE.Euler(x, y, z));

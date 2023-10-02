@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+//import { generateNumber } from "./util";後で使います
 import { flowerCluster } from "./flowerCluster";
 
 const init = () => {
