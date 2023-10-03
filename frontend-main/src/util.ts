@@ -1,12 +1,10 @@
-export class generateNumber {
-  //ランダムな実数を返す
-  static getRandomNumber(min: number, max: number): number {
-    return Math.random() * (max - min) + min;
-  }
+type Mode = "int" | "float";
 
-  //ランダムな整数を返す
-  static getRandomInt(min: number, max: number): number {
-    // (max - min + 1) を掛けて整数部分を取得し、min を加えて指定範囲の整数を得る
-    return Math.floor(Math.random() * (max - min + 1)) + min;
+// min 以上 max 未満の数を返す
+export const rand = (min: number, max: number, mode?: Mode): number => {
+  // mode が "int" ならランダムな整数を返す
+  if (mode === "int") {
+    return Math.floor(Math.random() * (max - min) + min);
   }
-}
+  return Math.random() * (max - min) + min;
+};
