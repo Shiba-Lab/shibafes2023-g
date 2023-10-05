@@ -20,9 +20,9 @@ jobs:
         with:
           node-version: 18.x
       - name: ci
-        run: npm ci
+        run: cd frontend-main && npm ci
       - name: frontend-main / ESLint
-        run: cd frontend-main && npm run eslint
+        run: npm run eslint
   main-build:
     runs-on: ubuntu-20.04
     steps:
@@ -33,9 +33,9 @@ jobs:
         with:
           node-version: 18.x
       - name: ci
-        run: npm ci
+        run: cd frontend-main && npm ci
       - name: frontend-main / Build
-        run: cd frontend-main && npm run build
+        run: npm run build
   react-eslint:
     runs-on: ubuntu-20.04
     steps:
@@ -46,7 +46,7 @@ jobs:
         with:
           node-version: 18.x
       - name: ci
-        run: npm ci
+        run: cd frontend-main && npm ci
       - name: frontend-react / ESLint
         run: cd frontend-react && npm run lint
   react-build:
@@ -59,6 +59,6 @@ jobs:
         with:
           node-version: 18.x
       - name: ci
-        run: npm ci
+        run: cd frontend-main && npm ci
       - name: frontend-react / Build
         run: cd frontend-react && npm run build
