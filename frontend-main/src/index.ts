@@ -12,7 +12,7 @@ const init = () => {
 
   //GLTFのファイルパスを格納
   const flowerModelsFilePath: string[] = [];
-  flowerModelsFilePath[0] = "./DamagedHelmet/glTF/flower.gltf"; //1個目の花のモデル
+  flowerModelsFilePath[0] = "./flowerGltf/flower.gltf"; //1個目の花のモデル
 
   // レンダラーを作成
   const renderer = createRenderer(width, height);
