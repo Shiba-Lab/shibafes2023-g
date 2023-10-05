@@ -3,6 +3,8 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { Flower } from "./types/FlowerType";
 import { flowerTransform } from "./flowerTransform";
 import { randomizeAnimationStartFrame } from "./animation/randomizeAnimationStartFrame";
+import { attachMaterial } from "./material/attachMaterial";
+import { createMaterial } from "./material/createMaterial";
 
 export const loadModel = (
   filePath: string,
@@ -15,13 +17,15 @@ export const loadModel = (
     flowers.forEach((flower) => {
       // 読み込み後にモデルのデータを格納
       const model = gltf.scene.clone();
-      scene.add(model);
 
-      //flowerにmodelを追加
+      // flowerにmodelを追加
       flower.model = model;
-
       // モデルのトランスフォーム
       flowerTransform(flower);
+
+      // マテリアル
+      const material: THREE.Material = createMaterial();
+      attachMaterial(flower.model, material);
 
       // アニメーションクリップを取得
       const originalClip = gltf.animations[0]; // 適切なアニメーションクリップを選択
@@ -37,6 +41,9 @@ export const loadModel = (
           mixers.push(mixer);
         }
       });
+
+      // シーンにモデルを追加
+      scene.add(model);
     });
   });
 };
