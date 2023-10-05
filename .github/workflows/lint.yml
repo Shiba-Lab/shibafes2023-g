@@ -1,0 +1,64 @@
+name: ci-pr
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+concurrency:
+  cancel-in-progress: true
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+
+jobs:
+  main-eslint:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set Node.js 18.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 18.x
+      - name: ci
+        run: npm ci
+      - name: frontend-main / ESLint
+        run: cd frontend-main && npm run eslint
+  main-build:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set Node.js 18.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 18.x
+      - name: ci
+        run: npm ci
+      - name: frontend-main / Build
+        run: cd frontend-main && npm run build
+  react-eslint:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set Node.js 18.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 18.x
+      - name: ci
+        run: npm ci
+      - name: frontend-react / ESLint
+        run: cd frontend-react && npm run lint
+  react-build:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set Node.js 18.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 18.x
+      - name: ci
+        run: npm ci
+      - name: frontend-react / Build
+        run: cd frontend-react && npm run build
