@@ -10,7 +10,7 @@ export const attachMaterial = (model: THREE.Object3D, material: THREE.Material) 
     ) {
       child.material = material.clone();
     } else {
-      console.log("モーフの情報が存在しません");
+      console.error("モーフの情報が存在しません");
     }
   });
 };

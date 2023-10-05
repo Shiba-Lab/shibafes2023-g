@@ -1,5 +1,6 @@
 import * as THREE from "three";
 
+//法線により色を変化させるシェーダー
 export const createMaterial = () => {
   const vertexShader = `
   #include <morphtarget_pars_vertex>
