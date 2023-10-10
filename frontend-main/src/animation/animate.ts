@@ -1,11 +1,14 @@
+import { Flower } from "../types/FlowerType";
+
 export const animate = (
   time: number,
+  flower: Flower[],
   mixers: THREE.AnimationMixer[],
   scene: THREE.Scene,
   camera: THREE.OrthographicCamera,
   renderer: THREE.WebGLRenderer
 ) => {
-  requestAnimationFrame((t) => animate(t, mixers, scene, camera, renderer));
+  requestAnimationFrame((t) => animate(t, flower, mixers, scene, camera, renderer));
 
   // アニメーションミキサーを更新
   if (mixers) {

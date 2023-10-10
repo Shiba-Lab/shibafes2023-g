@@ -55,7 +55,8 @@ const init = () => {
   //モデルのロード
   loadModel(flowerModelsFilePath[0], loader, scene, mixers, flower);
 
-  animate(0, mixers, scene, camera, renderer);
+  //アニメーション
+  animate(0, flower, mixers, scene, camera, renderer);
 };
 
 // ページの読み込みを待つ
