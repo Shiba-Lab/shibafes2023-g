@@ -89,9 +89,9 @@ const init = () => {
 
   //アニメーション
   if (renderColor == 0) {
-    animate(0, flower, mixers, scene, camera, renderer);
-  } else {
     grayScaleAnimate(0, flower, mixers, composer);
+  } else {
+    animate(0, flower, mixers, scene, camera, renderer);
   }
 };
 
