@@ -24,7 +24,10 @@ export const loadModel = (
       flowerTransform(flower);
 
       // マテリアル
-      const material: THREE.Material = createMaterial();
+      const material: THREE.Material = createMaterial(
+        new THREE.Color("rgb(255, 200, 100)"),
+        new THREE.Color("rgb(100, 200, 255)")
+      );
       attachMaterial(flower.model, material);
 
       // アニメーションクリップを取得

@@ -1,14 +1,13 @@
+import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
 import { Flower } from "../types/FlowerType";
 
-export const animate = (
+export const grayScaleAnimate = (
   time: number,
   flower: Flower[],
   mixers: THREE.AnimationMixer[],
-  scene: THREE.Scene,
-  camera: THREE.OrthographicCamera,
-  renderer: THREE.WebGLRenderer
+  composer: EffectComposer
 ) => {
-  requestAnimationFrame((t) => animate(t, flower, mixers, scene, camera, renderer));
+  requestAnimationFrame((t) => grayScaleAnimate(t, flower, mixers, composer));
 
   // アニメーションミキサーを更新
   if (mixers) {
@@ -18,7 +17,5 @@ export const animate = (
     });
   }
 
-  // レンダリング
-  renderer.setRenderTarget(null);
-  renderer.render(scene, camera);
+  composer.render();
 };
