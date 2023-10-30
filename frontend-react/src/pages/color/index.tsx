@@ -16,6 +16,7 @@ import {
   useDisclosure,
   useColorModeValue,
   Stack,
+  Container,
 } from "@chakra-ui/react";
 
 import { AiOutlineClose } from "react-icons/ai";
@@ -51,7 +52,8 @@ const Page = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
-    <>
+    <Container>
+
       <Box bg={useColorModeValue("gray.100", "gray.900")} px={4}>
         <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
           <IconButton
@@ -111,7 +113,7 @@ const Page = () => {
       </Box>
 
       <Box p={4}>Main Content Here</Box>
-    </>
+    </Container>
   );
 };
 
