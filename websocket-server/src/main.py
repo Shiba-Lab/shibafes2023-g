@@ -8,7 +8,7 @@ import json
 clients = {}  # 接続中のクライアントを管理する辞書
 admins = []  # 管理者を管理するリスト
 screens = []  # screenを管理するリスト
-
+color_list = ['red', 'blue', 'green', 'yellow', 'purple', 'orange', 'pink', 'brown']
 
 async def echo(websocket, path):
     print(f"Connected client: {websocket.remote_address}")
@@ -20,9 +20,9 @@ async def echo(websocket, path):
             print("message:", message)
             # messageをparse
             data = json.loads(message)
+            
             # messageによって分岐
             if data['type'] == 'setup':
-                # print(data)
                 if data.get('id') == None:
                     # idがない場合は新規接続なので、辞書に追加
                     client_id = str(uuid.uuid4())
@@ -40,7 +40,24 @@ async def echo(websocket, path):
                     clients[data['id']]['websocket'] = websocket
                 else:
                     clients[data['id']] = {
-                        'websocket': websocket, 'role': data['role']}
+                        **data,
+                        'websocket': websocket}
+            elif data['type'] == 'init_new':
+                # 新規接続の場合は辞書を更新
+                clients[data['id']] = {
+                    **data,
+                    'colorId': len(clients) % len(color_list),
+                    'clientNum': len(clients),
+                    'color': color_list[len(clients) % len(color_list)],
+                    'websocket': websocket
+                    }
+                await websocket.send(json.dumps(
+                    {
+                        'type': 'init_new',
+                        'color': clients[data['id']]['color'],
+                        'clientNum': len(clients)
+                    })
+                )
             else:
                 print(data)
             # 特定のクライアントにメッセージを送信する指示がある場合
