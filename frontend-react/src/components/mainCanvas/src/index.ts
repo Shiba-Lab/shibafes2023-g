@@ -1,15 +1,14 @@
 import * as THREE from "three";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
 import { ShaderPass } from "three/examples/jsm/postprocessing/ShaderPass.js";
 import { animate } from "./animation/animate";
 import { grayScaleAnimate } from "./animation/grayScaleAnimate";
 import { loadModel } from "./loadModel";
-import { createRenderer } from "./createRenderer";
 import { Flower } from "./types/FlowerType";
 
-const init = () => {
+export const init = (renderer: THREE.WebGLRenderer) => {
   //白黒にするかどうかの変数
   const renderColor = true; //0ならグレースケール、1ならカラー
 
@@ -22,9 +21,15 @@ const init = () => {
   flowerModelsFilePath[0] = "./flowerGltf/flowerCosmos.gltf"; //1個目の花のモデル
 
   //通常のレンダリング用(カラー)
-  const renderer = createRenderer(width, height); // レンダラーを作成
   const scene = new THREE.Scene(); // シーンを作成
-  const camera = new THREE.OrthographicCamera(-width / 100, width / 100, height / 100, -height / 100, 0.1, 1000); // カメラを作成(並行投影)
+  const camera = new THREE.OrthographicCamera(
+    -width / 100,
+    width / 100,
+    height / 100,
+    -height / 100,
+    0.1,
+    1000,
+  ); // カメラを作成(並行投影)
   camera.position.set(0, 15, 0);
   camera.lookAt(new THREE.Vector3(0, 0, 0));
 
@@ -94,6 +99,3 @@ const init = () => {
     grayScaleAnimate(0, flower, mixers, composer);
   }
 };
-
-// ページの読み込みを待つ
-window.addEventListener("DOMContentLoaded", init);

@@ -1,17 +1,17 @@
 import * as THREE from "three";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
-import { Flower } from "./types/FlowerType";
-import { flowerTransform } from "./flowerTransform";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { randomizeAnimationStartFrame } from "./animation/randomizeAnimationStartFrame";
+import { flowerTransform } from "./flowerTransform";
 import { attachMaterial } from "./material/attachMaterial";
 import { createMaterial } from "./material/createMaterial";
+import { Flower } from "./types/FlowerType";
 
 export const loadModel = (
   filePath: string,
   loader: GLTFLoader,
   scene: THREE.Scene,
   mixers: THREE.AnimationMixer[],
-  flowers: Flower[]
+  flowers: Flower[],
 ) => {
   loader.load(filePath, (gltf) => {
     flowers.forEach((flower) => {
@@ -26,7 +26,7 @@ export const loadModel = (
       // マテリアル
       const material: THREE.Material = createMaterial(
         new THREE.Color("rgb(255, 200, 100)"),
-        new THREE.Color("rgb(100, 200, 255)")
+        new THREE.Color("rgb(100, 200, 255)"),
       );
       attachMaterial(flower.model, material);
 
