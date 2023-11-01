@@ -27,7 +27,7 @@ const Settings = () => {
           isClosable: true,
         });
         if (id) {
-          // idを再送信したい
+          // TODO: idを再送信したい
         }
       },
       onClose: () => {
@@ -72,8 +72,6 @@ const Settings = () => {
     if (message?.type === "setup") {
       setPageType(message.role);
       setId(message.id);
-      // canvasだったら自分のデータ送信
-      // adiminだったら全データ取得
     } else if (message?.type === "check_reconnect") {
       if (id) {
         sendJsonMessage({ type: "reconnect", id: id, role: role });
@@ -98,6 +96,7 @@ const Settings = () => {
         fullscreenHandle={fullscreenHandle}
         id={id}
         sendJsonMessage={sendJsonMessage}
+        lastJsonMessage={lastJsonMessage}
       />
     );
   if (pageType === "user") return <Box>user</Box>;
