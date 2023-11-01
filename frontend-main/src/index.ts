@@ -11,7 +11,7 @@ import { Flower } from "./types/FlowerType";
 
 const init = () => {
   //白黒にするかどうかの変数
-  const renderColor = 0; //0ならグレースケール、1ならカラー
+  const renderColor = true; //0ならグレースケール、1ならカラー
 
   // サイズを指定
   const width = 960;
@@ -19,7 +19,7 @@ const init = () => {
 
   //GLTFのファイルパスを格納
   const flowerModelsFilePath: string[] = [];
-  flowerModelsFilePath[0] = "./flowerGltf/flower.gltf"; //1個目の花のモデル
+  flowerModelsFilePath[0] = "./flowerGltf/flowerCosmos.gltf"; //1個目の花のモデル
 
   //通常のレンダリング用(カラー)
   const renderer = createRenderer(width, height); // レンダラーを作成
@@ -78,7 +78,7 @@ const init = () => {
       scale: 1,
     },
     {
-      coordinate: new THREE.Vector3(1, 0, 1),
+      coordinate: new THREE.Vector3(2, 0, 2),
       rotation: new THREE.Euler(0, Math.PI, 0),
       scale: 2,
     },
@@ -88,10 +88,10 @@ const init = () => {
   loadModel(flowerModelsFilePath[0], loader, scene, mixers, flower);
 
   //アニメーション
-  if (renderColor == 0) {
-    grayScaleAnimate(0, flower, mixers, composer);
-  } else {
+  if (renderColor) {
     animate(0, flower, mixers, scene, camera, renderer);
+  } else {
+    grayScaleAnimate(0, flower, mixers, composer);
   }
 };
 
