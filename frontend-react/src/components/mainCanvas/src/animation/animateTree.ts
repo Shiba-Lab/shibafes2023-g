@@ -1,3 +1,5 @@
+import * as THREE from "three";
+
 export const animateTree = (
   time: number,
   mixers: THREE.AnimationMixer[],

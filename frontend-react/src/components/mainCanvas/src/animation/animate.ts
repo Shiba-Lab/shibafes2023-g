@@ -1,3 +1,4 @@
+import * as THREE from "three";
 import { Flower } from "../types/FlowerType";
 
 export const animate = (
@@ -22,16 +23,16 @@ export const animate = (
     //花が咲くまでの時間で大きくする。
     let scaleFactor: number;
     const elapsedTime = clock.getElapsedTime();
-
     if (
       elapsedTime >= flower.deltaTime / 1000 &&
       elapsedTime <= flower.deltaTime / 1000 + 4
     ) {
       scaleFactor = (elapsedTime - flower.deltaTime / 1000) / 4;
+      scaleFactor *= flower.scale * flower.deltaSize;
     } else if (elapsedTime >= 0 && elapsedTime < flower.deltaTime / 1000) {
       scaleFactor = 0;
     } else {
-      scaleFactor = 1;
+      scaleFactor = flower.scale * flower.deltaSize;
     }
 
     if (flower.model) {
