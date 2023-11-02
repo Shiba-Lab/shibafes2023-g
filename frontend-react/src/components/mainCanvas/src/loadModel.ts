@@ -23,11 +23,21 @@ export const loadModel = (
       // モデルのトランスフォーム
       flowerTransform(flower);
 
+      let material: THREE.Material;
+
       // マテリアル
-      const material: THREE.Material = createMaterial(
-        new THREE.Color("rgb(255, 200, 100)"),
-        new THREE.Color("rgb(100, 200, 255)"),
-      );
+      if (flower.color1 && flower.color2) {
+        material = createMaterial(
+          flower.color1 as THREE.Color,
+          flower.color2 as THREE.Color,
+        );
+      } else {
+        material = createMaterial(
+          new THREE.Color("rgb(255, 200, 100)"),
+          new THREE.Color("rgb(100, 200, 255)"),
+        );
+      }
+
       attachMaterial(flower.model, material);
 
       // アニメーションクリップを取得
@@ -39,7 +49,12 @@ export const loadModel = (
           const mixer = new THREE.AnimationMixer(child);
           const modifiedClip = randomizeAnimationStartFrame(originalClip);
           const action = mixer.clipAction(modifiedClip);
-          action.play();
+
+          //アニメーションの遅延
+          setTimeout(() => {
+            action.play();
+          }, flower.deltaTime);
+
           // ミキサーを保存
           mixers.push(mixer);
         }

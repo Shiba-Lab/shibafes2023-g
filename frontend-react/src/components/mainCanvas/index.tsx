@@ -10,6 +10,8 @@ export const ThreeJSComponent = () => {
     const canvas = ref.current as HTMLDivElement;
     const renderer = new THREE.WebGLRenderer({
       alpha: true,
+      stencil: true,
+      antialias: true,
     });
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setClearColor(0x000000, 0); //背景透過
