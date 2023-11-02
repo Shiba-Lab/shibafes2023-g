@@ -1,0 +1,1 @@
+export const SERVER_URL = 'ws://192.168.100.127:5001';
