@@ -7,11 +7,6 @@ import {
   HStack,
   Heading,
   Input,
-  RangeSlider,
-  RangeSliderFilledTrack,
-  RangeSliderMark,
-  RangeSliderThumb,
-  RangeSliderTrack,
   Slider,
   SliderFilledTrack,
   SliderMark,
@@ -38,8 +33,8 @@ const Page = () => {
           // Form の値を取得
           setSubmitData({
             flowerCount: e.target[0].value,
-            flowerGradient: [e.target[1].value, e.target[2].value],
-            flowerSizeRange: [e.target[3].value],
+            flowerSizeRange: [e.target[1].value, e.target[2].value],
+            flowerColor: [e.target[3].value, e.target[4].value],
           });
 
           console.log("submit");
@@ -50,6 +45,41 @@ const Page = () => {
           <Box py={4}>
             <FormLabel>花の咲く数</FormLabel>
             <Slider min={10} max={100} step={1}>
+              <SliderMark value={10} {...labelStyles}>
+                小
+              </SliderMark>
+              <SliderMark value={100} {...labelStyles}>
+                大
+              </SliderMark>
+              <SliderTrack bg="red.100">
+                <Box position="relative" right={10} />
+                <SliderFilledTrack bg="tomato" />
+              </SliderTrack>
+              <SliderThumb boxSize={6} />
+            </Slider>
+          </Box>
+
+          {/* 花弁の大きさ */}
+          <Box py={4}>
+            <FormLabel>花弁の大きさ (最小)</FormLabel>
+            <Slider defaultValue={30} min={10} max={100} step={1}>
+              <SliderMark value={10} {...labelStyles}>
+                10
+              </SliderMark>
+              <SliderMark value={100} {...labelStyles}>
+                100
+              </SliderMark>
+              <SliderTrack bg="red.100">
+                <Box position="relative" right={10} />
+                <SliderFilledTrack bg="tomato" />
+              </SliderTrack>
+              <SliderThumb boxSize={6} />
+            </Slider>
+          </Box>
+
+          <Box py={4}>
+            <FormLabel>花弁の大きさ (最大)</FormLabel>
+            <Slider defaultValue={60} min={10} max={100} step={1}>
               <SliderMark value={10} {...labelStyles}>
                 10
               </SliderMark>
@@ -65,33 +95,6 @@ const Page = () => {
               </SliderTrack>
               <SliderThumb boxSize={6} />
             </Slider>
-          </Box>
-
-          {/* 花弁の大きさ */}
-          <Box py={4}>
-            <FormLabel> 花弁の大きさ (最小 - 最大) </FormLabel>
-            <RangeSlider
-              aria-label={["min", "max"]}
-              defaultValue={[30, 60]}
-              min={10}
-              max={100}
-            >
-              <RangeSliderMark value={10} {...labelStyles}>
-                10
-              </RangeSliderMark>
-              <RangeSliderMark value={55} {...labelStyles}>
-                55
-              </RangeSliderMark>
-              <RangeSliderMark value={100} {...labelStyles}>
-                100
-              </RangeSliderMark>
-
-              <RangeSliderTrack>
-                <RangeSliderFilledTrack />
-              </RangeSliderTrack>
-              <RangeSliderThumb index={0} />
-              <RangeSliderThumb index={1} />
-            </RangeSlider>
           </Box>
 
           {/* 色選択 */}
