@@ -244,6 +244,15 @@ const initialize = (renderer: THREE.WebGLRenderer) => {
   const texts3 = createText(scene, flower3, text);
   const texts4 = createText(scene, flower4, text);
 
+  //背景
+  const backWidth = (camera.right - camera.left) * width;
+  const backHeight = (camera.top - camera.bottom) * height;
+  const geometryBack = new THREE.BoxGeometry(backWidth, 1, backHeight);
+  const materialBack = new THREE.MeshBasicMaterial({ color: 0x000000 });
+  const backg = new THREE.Mesh(geometryBack, materialBack);
+  backg.position.set(0, -100, 0); //背面に配置
+  scene.add(backg);
+
   //画面全体の大きさの変更(調整用)
   const scaleFactor = 3;
   scene.traverse((object) => {
@@ -286,15 +295,6 @@ const initialize = (renderer: THREE.WebGLRenderer) => {
 };
 
 export const init = (renderer: THREE.WebGLRenderer) => {
-  //背景
-  const backWidth = (camera.right - camera.left) * width;
-  const backHeight = (camera.top - camera.bottom) * height;
-  const geometryBack = new THREE.BoxGeometry(backWidth, 1, backHeight);
-  const materialBack = new THREE.MeshBasicMaterial({ color: 0x000000 });
-  const backg = new THREE.Mesh(geometryBack, materialBack);
-  backg.position.set(0, -100, 0); //背面に配置
-  scene.add(backg);
-
   setTimeout(() => {
     initialize(renderer);
   }, 2000);
