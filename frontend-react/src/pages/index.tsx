@@ -2,8 +2,8 @@ import { Box, Button, Container, FormControl, FormLabel, Heading, Input, Slider,
 import Head from "next/head";
 import QRCode from 'qrcode';
 import React from "react"
+import { ThreeJSComponent } from "../components/mainCanvas/index";
 import { SERVER_URL } from "../components/websocketUtils/utils"
-import { ThreeJSComponent } from "@/components/mainCanvas";
 
 const ROLE = "phone";
 
@@ -79,15 +79,23 @@ export default function Home() {
           onSubmit={(e) => {
             // デフォルトのイベントをキャンセル
             e.preventDefault();
+            const form = e.target as HTMLFormElement;
 
             // Form の値を取得して送信
+            const flowerCount   = (form.elements[0] as HTMLInputElement).value;
+            const flowerSizeMin = (form.elements[1] as HTMLInputElement).value;
+            const flowerSizeMax = (form.elements[2] as HTMLInputElement).value;
+            const flowerColor1  = (form.elements[3] as HTMLInputElement).value;
+            const flowerColor2  = (form.elements[4] as HTMLInputElement).value;
+
+
             ws.current?.send(JSON.stringify({
               uuid: uuid,
               role: ROLE,
               type: "sendFlowerData",
-              flowerCount: e.target[0].value,
-              flowerSizeRange: [e.target[1].value, e.target[2].value],
-              flowerColor: [e.target[3].value, e.target[4].value],
+              flowerCount: flowerCount,
+              flowerSizeRange: [flowerSizeMin, flowerSizeMax],
+              flowerColor: [flowerColor1, flowerColor2],
             }));
 
             // 自身の uuid の QR コードを生成
