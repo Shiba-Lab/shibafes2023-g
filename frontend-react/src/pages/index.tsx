@@ -76,17 +76,17 @@ export default function Home() {
 
       <Container maxW="md">
         <form
-          onSubmit={(e) => {
+          onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
             // デフォルトのイベントをキャンセル
             e.preventDefault();
             const form = e.target as HTMLFormElement;
 
             // Form の値を取得して送信
-            const flowerCount   = (form.elements[0] as HTMLInputElement).value;
-            const flowerSizeMin = (form.elements[1] as HTMLInputElement).value;
-            const flowerSizeMax = (form.elements[2] as HTMLInputElement).value;
-            const flowerColor1  = (form.elements[3] as HTMLInputElement).value;
-            const flowerColor2  = (form.elements[4] as HTMLInputElement).value;
+            const flowerCount   = (form.elements.namedItem("flowerCount") as HTMLInputElement).value;
+            const flowerSizeMin = (form.elements.namedItem("flowerSizeMin") as HTMLInputElement).value;
+            const flowerSizeMax = (form.elements.namedItem("flowerSizeMax") as HTMLInputElement).value;
+            const flowerColor1  = (form.elements.namedItem("color1") as HTMLInputElement).value;
+            const flowerColor2  = (form.elements.namedItem("color2")   as HTMLInputElement).value;
 
 
             ws.current?.send(JSON.stringify({
@@ -110,7 +110,7 @@ export default function Home() {
             {/* 花の数 */}
             <Box py={4}>
               <FormLabel>花の咲く数</FormLabel>
-              <Slider min={10} max={100} step={1}>
+              <Slider min={10} max={100} step={1} name="flowerCount">
                 <SliderMark value={10} {...labelStyles}>
                   小
                 </SliderMark>
@@ -128,7 +128,7 @@ export default function Home() {
             {/* 花弁の大きさ */}
             <Box py={4}>
               <FormLabel>花弁の大きさ (最小)</FormLabel>
-              <Slider defaultValue={30} min={10} max={100} step={1}>
+              <Slider defaultValue={30} min={10} max={100} step={1} name="flowerSizeMin">
                 <SliderMark value={10} {...labelStyles}>
                   10
                 </SliderMark>
@@ -145,7 +145,7 @@ export default function Home() {
   
             <Box py={4}>
               <FormLabel>花弁の大きさ (最大)</FormLabel>
-              <Slider defaultValue={60} min={10} max={100} step={1}>
+              <Slider defaultValue={60} min={10} max={100} step={1} name="flowerSizeMax">
                 <SliderMark value={10} {...labelStyles}>
                   10
                 </SliderMark>
@@ -166,12 +166,12 @@ export default function Home() {
             {/* 色選択 */}
             <Box py={4}>
               <FormLabel>花の色 (始点)</FormLabel>
-              <Input type="color" />
+              <Input type="color" name="color1"/>
             </Box>
 
             <Box py={4}>
               <FormLabel>花の色 (終点)</FormLabel>
-              <Input type="color" />
+              <Input type="color" name="color2"/>
             </Box>
           </FormControl>
   
