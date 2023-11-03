@@ -1,0 +1,1 @@
+export const SERVER_URL = 'wss://shibafes2023g-f57388251b9d.herokuapp.com/';

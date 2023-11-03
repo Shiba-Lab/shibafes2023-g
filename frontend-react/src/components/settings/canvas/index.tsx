@@ -28,8 +28,12 @@ export const Canvas = (props: Props) => {
   const [height, setHeight] = useState<number>(0);
   const [color, setColor] = useState<string>("");
   const [clientNum, setClientNum] = useState<number>(0);
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [x, setX] = useState<number>(0);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [y, setY] = useState<number>(0);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [theta, setTheta] = useState<number>(0);
 
   const onToggleFullscreen = () => {

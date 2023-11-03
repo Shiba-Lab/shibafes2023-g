@@ -3,7 +3,12 @@ import * as THREE from "three";
 import { init } from "./src";
 import styles from "./src/style/fullbutton.module.css";
 
-export const ThreeJSComponent = () => {
+// number 型の waitUntil を含む type
+type Props = {
+  waitUntil: number;
+}
+
+export const ThreeJSComponent: React.FC<Props> = (props: Props) => {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -18,7 +23,7 @@ export const ThreeJSComponent = () => {
     renderer.setClearColor(0x000000, 0); //背景透過
     renderer.setSize(window.innerWidth, window.innerHeight);
     canvas.appendChild(renderer.domElement);
-    init(renderer);
+    init(renderer, props.waitUntil);
   }, []);
 
   return (

@@ -300,8 +300,8 @@ const initialize = (renderer: THREE.WebGLRenderer) => {
   window.addEventListener("resize", onWindowResize, false);
 };
 
-export const init = (renderer: THREE.WebGLRenderer) => {
+export const init = (renderer: THREE.WebGLRenderer, waitUntil: number) => {
   setTimeout(() => {
     initialize(renderer);
-  }, 2000);
+  }, waitUntil);
 };

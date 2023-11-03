@@ -22,8 +22,10 @@ export const SketchComponent = () => {
   let lastBar = -1;
 
   const draw = (p5: p5Types) => {
+    // eslint-disable-next-line prefer-const
     let whichBar = p5.mouseX / barWidth;
     if (whichBar !== lastBar) {
+      // eslint-disable-next-line prefer-const
       let barX = whichBar * barWidth;
       p5.fill(barX, p5.mouseY, 66);
       p5.rect(barX, 0, barWidth, p5.height);
