@@ -11,7 +11,7 @@ export default function Home() {
 
   const [playTime, setPlayTime] = React.useState(null);
   const [uuid, setUuid] = React.useState('');
-  const [qrCodeURL, setQRCodeURL] = React.useState(null);
+  const [qrCodeURL, setQRCodeURL] = React.useState<string | null>(null);
   const [animationStarted, setAnimationStarted] = React.useState(false);
 
   // {/* WebSocket のインスタンスを保持する。 */}
@@ -209,7 +209,7 @@ export default function Home() {
               <img src={qrCodeURL} alt="Generated QR Code" />
             ) : (
               animationStarted ? (
-                <ThreeJSComponent />
+                <ThreeJSComponent waitUntil={1000} />
               ) : (
                 <p>{playTime}</p>
               )
