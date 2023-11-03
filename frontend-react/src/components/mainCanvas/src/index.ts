@@ -27,8 +27,8 @@ const initialize = (renderer: THREE.WebGLRenderer) => {
 
   //スマホ画面用の設定
   const sumaho = new THREE.BoxGeometry(0.45, 2, 1); //スマホの画面の大きさと位置(プロジェクター用)
-  const sumaho2 = new THREE.Vector3(0, 0, 4);
-  const screenRatio = 0.5; //縦の幅で比率をとる
+  const sumaho2 = new THREE.Vector3(0, 0, 4); //位置
+  const screenRatio = 0.2; //拡大
 
   //カメラの回転量
   const cameraRotation = 0;
