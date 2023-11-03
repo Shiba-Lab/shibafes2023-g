@@ -56,7 +56,7 @@ export const animate = (
       textScale[i] = flower.scale * flower.deltaSize;
     }
 
-    textScale[i] *= 1.5;
+    textScale[i] *= 1.6;
 
     i += 1;
   });

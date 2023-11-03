@@ -24,11 +24,12 @@ const initialize = (renderer: THREE.WebGLRenderer) => {
   const inputFlowerMax = 1;
   //テキスト
   const text: string = "Adobe";
+  const fontnum = 1; //フォントを何使うか
 
   //スマホ画面用の設定
   const sumaho = new THREE.BoxGeometry(0.45, 2, 1); //スマホの画面の大きさと位置(プロジェクター用)
-  const sumaho2 = new THREE.Vector3(0, 0, 4);
-  const screenRatio = 0.5; //縦の幅で比率をとる
+  const sumaho2 = new THREE.Vector3(0, 0, 4); //位置
+  const screenRatio = 0.2; //拡大
 
   //カメラの回転量
   const cameraRotation = 0;
@@ -53,6 +54,11 @@ const initialize = (renderer: THREE.WebGLRenderer) => {
   flowerModelsFilePath[1] = "./flowerGltf/cherryBlossom.gltf"; //現在使用不可
   flowerModelsFilePath[2] = "./flowerGltf/icho.gltf"; //銀杏
   flowerModelsFilePath[3] = "./flowerGltf/flower.gltf"; //最初の
+
+  //フォントパス
+  const fontPath: string[] = [];
+  fontPath[0] = "./fonts/helv.json";
+  fontPath[1] = "./fonts/gentilis_regular.typeface.json";
 
   //レンダリング用
   const scene = new THREE.Scene(); // シーンを作成
@@ -239,10 +245,10 @@ const initialize = (renderer: THREE.WebGLRenderer) => {
   loadModel(flowerModelsFilePath[fileindex], loader, scene, mixers, flower4);
   loadTree(treeFilePath, treeLoader, scene, treeMixer);
 
-  const texts = createText(scene, flower, text);
-  const texts2 = createText(scene, flower2, text);
-  const texts3 = createText(scene, flower3, text);
-  const texts4 = createText(scene, flower4, text);
+  const texts = createText(scene, flower, text, fontPath[fontnum]);
+  const texts2 = createText(scene, flower2, text, fontPath[fontnum]);
+  const texts3 = createText(scene, flower3, text, fontPath[fontnum]);
+  const texts4 = createText(scene, flower4, text, fontPath[fontnum]);
 
   //背景
   const backWidth = (camera.right - camera.left) * width;
