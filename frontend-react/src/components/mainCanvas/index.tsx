@@ -22,7 +22,7 @@ export const ThreeJSComponent = () => {
   }, []);
 
   return (
-    <div>
+    <div style={{ backgroundColor: "black", minHeight: "100vh" }}>
       <div ref={ref} />
       <div className={styles.fullscreencontainer}>
         <button id="fullscreen-btn" className={styles.fullscreenBtn}>
