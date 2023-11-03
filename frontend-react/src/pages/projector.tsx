@@ -44,7 +44,6 @@ const Page = () => {
           break;
         case "prePlay":
           setPlayTime(obj.startTime);
-          drawAtDate();
           break;
 
       }
@@ -53,20 +52,6 @@ const Page = () => {
       ws.current?.close();
     }
   }, [])
-
-  const drawAtDate = () => {
-
-    if (playTime === null) {
-      return;
-    }
-
-    const delay = playTime - Date.now();
-    console.log(delay);
-
-    setTimeout(() => {
-      setAnimationStarted(true);
-    }, delay);
-  }
 
   return (
     <div>

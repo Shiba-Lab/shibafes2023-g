@@ -46,7 +46,6 @@ export default function Home() {
           break;
         case "prePlay":
           setPlayTime(obj.startTime);
-          drawAtDate();
           break;
       }
     }
@@ -183,19 +182,6 @@ export default function Home() {
         </form>
       </Container>
     )
-  }
-
-  const drawAtDate = () => {
-
-    if (playTime === null) {
-      return;
-    }
-
-    const delay = playTime - Date.now();
-
-    setTimeout(() => {
-      setAnimationStarted(true);
-    }, delay);
   }
 
   return (
