@@ -1,0 +1,27 @@
+/*三嶋追記*/
+.fullscreenContainer {
+  display: flex;
+  width: 100vw;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ボタン自体のスタイル */
+.fullscreenBtn {
+  padding: 10px 20px; /* ボタンの内側の余白（上下左右） */
+  font-size: 16px; /* 文字の大きさ */
+  cursor: pointer; /* カーソルをポインターに */
+  border: none; /* 枠線なし */
+  background-color: #5e94cf; /* 背景色 */
+  color: white; /* 文字色 */
+  border-radius: 10px; /* 角の丸み */
+  margin: auto;
+}
+
+/* ボタンにホバーしたときのスタイル */
+.fullscreenBtn:hover {
+  background-color: #0056b3; /* 背景色を少し暗く */
+}

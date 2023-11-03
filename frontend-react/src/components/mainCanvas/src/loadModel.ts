@@ -1,7 +1,6 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { randomizeAnimationStartFrame } from "./animation/randomizeAnimationStartFrame";
-import { flowerTransform } from "./flowerTransform";
 import { attachMaterial } from "./material/attachMaterial";
 import { createMaterial } from "./material/createMaterial";
 import { Flower } from "./types/FlowerType";
@@ -20,14 +19,27 @@ export const loadModel = (
 
       // flowerにmodelを追加
       flower.model = model;
+
       // モデルのトランスフォーム
-      flowerTransform(flower);
+      flower.model.position.copy(flower.coordinate);
+      flower.model.rotation.copy(flower.rotation);
+      console.log(flower.scale);
+
+      let material: THREE.Material;
 
       // マテリアル
-      const material: THREE.Material = createMaterial(
-        new THREE.Color("rgb(255, 200, 100)"),
-        new THREE.Color("rgb(100, 200, 255)"),
-      );
+      if (flower.color1 && flower.color2) {
+        material = createMaterial(
+          flower.color1 as THREE.Color,
+          flower.color2 as THREE.Color,
+        );
+      } else {
+        material = createMaterial(
+          new THREE.Color("rgb(255, 200, 100)"),
+          new THREE.Color("rgb(100, 200, 255)"),
+        );
+      }
+
       attachMaterial(flower.model, material);
 
       // アニメーションクリップを取得
@@ -39,7 +51,27 @@ export const loadModel = (
           const mixer = new THREE.AnimationMixer(child);
           const modifiedClip = randomizeAnimationStartFrame(originalClip);
           const action = mixer.clipAction(modifiedClip);
-          action.play();
+
+          //アニメーションの遅延
+          setTimeout(() => {
+            action.play();
+
+            action.clampWhenFinished = true; // アニメーションが終了したらその場で止める
+            action.loop = THREE.LoopOnce; // アニメーションを一度だけ再生する
+
+            // アニメーションが終了したら呼ばれるイベント
+            action.getClip().duration; // アニメーションの長さを取得
+            mixer.addEventListener("finished", (e) => {
+              if (e.action === action) {
+                setTimeout(() => {
+                  // 一定時間経過後に再生を再開する
+                  action.reset(); // アニメーションの状態をリセット
+                  action.play(); // アニメーションを再生
+                }, 100000); // 100秒後にまた再生(実質終わるまで表示させ続ける)
+              }
+            });
+          }, flower.deltaTime);
+
           // ミキサーを保存
           mixers.push(mixer);
         }

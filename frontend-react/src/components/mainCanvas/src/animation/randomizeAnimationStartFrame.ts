@@ -9,5 +9,5 @@ export const randomizeAnimationStartFrame = (clip: THREE.AnimationClip) => {
   });
 
   // 調整したトラックで新しいアニメーションクリップを作成
-  return new THREE.AnimationClip(clip.name, clip.duration, modifiedTracks);
+  return new THREE.AnimationClip(clip.name, clip.duration * 10, modifiedTracks);
 };

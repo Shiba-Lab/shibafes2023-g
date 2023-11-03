@@ -1,10 +1,10 @@
 import { Box } from "@chakra-ui/react";
-import { ThreeJSComponent } from "@/components/mainCanvas";
+import { ThreeJSComponent } from "../../components/mainCanvas/index";
 
 const Canvas = () => {
   return (
     <Box w="100%" h="100%">
-      <ThreeJSComponent />
+      <ThreeJSComponent waitUntil={5000} />
     </Box>
   );
 };
