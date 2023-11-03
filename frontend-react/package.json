@@ -33,6 +33,7 @@
     "react-use-websocket": "^4.4.0",
     "reconnecting-websocket": "^4.4.0",
     "three-gltf-loader": "^1.111.0",
+    "three-text2d": "^0.6.0",
     "typescript": "5.2.2"
   },
   "devDependencies": {
@@ -40,6 +41,6 @@
     "@types/three": "^0.156.0",
     "@typescript-eslint/eslint-plugin": "^6.7.2",
     "react-full-screen": "^1.1.1",
-    "three": "^0.156.1"
+    "three": "^0.158.0"
   }
 }

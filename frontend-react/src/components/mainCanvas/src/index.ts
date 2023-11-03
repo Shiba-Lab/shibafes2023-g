@@ -7,22 +7,43 @@ import { animate } from "./animation/animate";
 import { animateTree } from "./animation/animateTree";
 import { grayScaleAnimate } from "./animation/grayScaleAnimate";
 import { createFlower } from "./createFlower";
+import { createText } from "./createText";
 import { loadModel } from "./loadModel";
 import { loadTree } from "./loadTree";
 import { Flower } from "./types/FlowerType";
 
-export const init = (renderer: THREE.WebGLRenderer) => {
+const initialize = (renderer: THREE.WebGLRenderer) => {
+  /*入力される変数管理*/
   //白黒にするかどうかの変数
   const renderColor = true; //0ならグレースケール、1ならカラー
+  //スマホ画面かそれ以外か
+  const wrapperScreen = true;
+  //花のインプット関係
+  const inputFlowerNum = 10;
+  const inputFlowerMin = 0.3;
+  const inputFlowerMax = 1;
+  //テキスト
+  const text: string = "Adobe";
 
+  //スマホ画面用の設定
+  const sumaho = new THREE.BoxGeometry(0.45, 2, 1); //スマホの画面の大きさと位置(プロジェクター用)
+  const sumaho2 = new THREE.Vector3(0, 0, 4);
+  const screenRatio = 0.5; //縦の幅で比率をとる
+
+  //カメラの回転量
+  const cameraRotation = 0;
+
+  //
+  //
+  //
   //時間
   const clock = new THREE.Clock();
   const flowerDelta: number = 3000; //花が咲くまでの時間(木が生える時間)
 
-  // サイズを指定
+  // 画面サイズを指定
   const width = window.innerWidth;
   const height = window.innerHeight;
-  const magnification = 140; //全体の大きさを変更
+  const magnification = 120; //全体の大きさを変更
 
   //GLTFのファイルパスを格納
   const fileindex: number = 0;
@@ -33,24 +54,77 @@ export const init = (renderer: THREE.WebGLRenderer) => {
   flowerModelsFilePath[2] = "./flowerGltf/icho.gltf"; //銀杏
   flowerModelsFilePath[3] = "./flowerGltf/flower.gltf"; //最初の
 
-  //通常のレンダリング用(カラー)
+  //レンダリング用
   const scene = new THREE.Scene(); // シーンを作成
-  const camera = new THREE.OrthographicCamera(
-    -width / magnification,
-    width / magnification,
-    height / magnification,
-    -height / magnification,
-    0.1,
-    1000,
-  ); // カメラを作成(並行投影)
-  camera.position.set(0, 15, 0);
-  camera.lookAt(new THREE.Vector3(0, 0, 0));
+  let camera: THREE.OrthographicCamera;
+  if (wrapperScreen) {
+    camera = new THREE.OrthographicCamera(
+      -width / magnification,
+      width / magnification,
+      height / magnification,
+      -height / magnification,
+      0.1,
+      1000,
+    );
+
+    camera.position.set(0, 15, 0);
+    camera.rotation.x = -Math.PI / 2;
+
+    //スマホおく位置の表示
+    const geometry = sumaho;
+    const material = new THREE.MeshBasicMaterial({ color: 0xffffff });
+    const mask = new THREE.Mesh(geometry, material);
+    mask.position.set(0, 10, 5); //前面に配置
+    scene.add(mask);
+
+    //マスク
+    /*
+    const maskWidth = pixelWidth; //ピクセル
+    const maskHeight = pixelHeight; //ピクセル
+    const boxWidth = maskWidth / (magnification * 2);
+    const boxHeight = maskHeight / (magnification * 2);
+    //ジオメトリ
+    const geometry = new THREE.BoxGeometry(boxWidth, 1, boxHeight);
+    const material = new THREE.MeshBasicMaterial({ color: 0x000000 });
+    const mask = new THREE.Mesh(geometry, material);
+    mask.position.set(0, 10, 0); //前面に配置
+    mask.rotation.y = cameraRotation; //回転
+    scene.add(mask);
+    */
+  } else {
+    // OrthographicCameraを作成
+    camera = new THREE.OrthographicCamera(
+      -width / magnification, // left
+      width / magnification, // right
+      height / magnification, // top
+      -height / magnification, // bottom
+      0.1, // near
+      1000, // far
+    );
+
+    renderer.setSize(width, height); //レンダラーのサイズ変更
+
+    camera.position.set(0, 15, 0);
+    camera.rotation.x = -Math.PI / 2;
+    camera.rotation.z = cameraRotation; //画面の回転
+
+    camera.left *= screenRatio;
+    camera.right *= screenRatio;
+    camera.top *= screenRatio;
+    camera.bottom *= screenRatio;
+
+    camera.position.copy(sumaho2);
+
+    console.log();
+
+    // 必ずカメラのプロジェクションマトリクスを更新する
+    camera.updateProjectionMatrix();
+  }
 
   //フルスクリーン
   const fullscreenButton = document.getElementById("fullscreen-btn");
   const goFullScreen = () => {
     const canvas = renderer.domElement;
-
     if (canvas.requestFullscreen) {
       canvas.requestFullscreen();
     }
@@ -107,12 +181,12 @@ export const init = (renderer: THREE.WebGLRenderer) => {
 
   //フラワーの作成
   const flower: Flower[] = createFlower(
-    10, //数
+    inputFlowerNum, //数
     -2.2, //原点x
     -1, //原点y
     2.5, //半径
-    0.3, //大きさみん
-    1, //大きさまっくす
+    inputFlowerMin, //大きさみん
+    inputFlowerMax, //大きさまっくす
     0.6, //大きさ
     flowerDelta + 4000,
     new THREE.Color("rgb(255, 200, 100)"),
@@ -120,12 +194,12 @@ export const init = (renderer: THREE.WebGLRenderer) => {
   );
 
   const flower2: Flower[] = createFlower(
-    10, //数
+    inputFlowerNum, //数
     2, //原点x
     -0.5, //原点y
     1.8, //半径
-    0.3, //大きさみん
-    1, //大きさまっくす
+    inputFlowerMin, //大きさみん
+    inputFlowerMax, //大きさまっくす
     0.5, //大きさ
     flowerDelta + 4000,
     new THREE.Color("rgb(255, 200, 100)"),
@@ -133,12 +207,12 @@ export const init = (renderer: THREE.WebGLRenderer) => {
   );
 
   const flower3: Flower[] = createFlower(
-    7, //数
+    inputFlowerNum - 3, //数
     1.7, //原点x
     -3.5, //原点y
     1.2, //半径
-    0.3, //大きさみん
-    1, //大きさまっくす
+    inputFlowerMin, //大きさみん
+    inputFlowerMax, //大きさまっくす
     0.3, //大きさ
     flowerDelta + 4000,
     new THREE.Color("rgb(255, 200, 100)"),
@@ -146,12 +220,12 @@ export const init = (renderer: THREE.WebGLRenderer) => {
   );
 
   const flower4: Flower[] = createFlower(
-    6, //数
+    inputFlowerNum - 4, //数
     -1.7, //原点x
     -4.5, //原点y
     1.3, //半径
-    0.3, //大きさみん
-    1, //大きさまっくす
+    inputFlowerMin, //大きさみん
+    inputFlowerMax, //大きさまっくす
     0.3, //大きさ
     flowerDelta + 4000,
     new THREE.Color("rgb(255, 200, 100)"),
@@ -165,34 +239,10 @@ export const init = (renderer: THREE.WebGLRenderer) => {
   loadModel(flowerModelsFilePath[fileindex], loader, scene, mixers, flower4);
   loadTree(treeFilePath, treeLoader, scene, treeMixer);
 
-  //マスク(黒い板を配置しているだけ)
-  /*
-  const maskWidth = 200; //ピクセル
-  const maskHeight = 300; //ピクセル
-  const sceneWidth = camera.right - camera.left;
-  const sceneHeight = camera.top - camera.bottom;
-  const boxWidth = sceneWidth * (maskWidth / width);
-  const boxHeight = sceneHeight * (maskHeight / height);
-
-  const geometry = new THREE.BoxGeometry(boxWidth, 1, boxHeight);
-  const material = new THREE.MeshBasicMaterial({ color: 0x000000 });
-  const mask = new THREE.Mesh(geometry, material);
-  mask.position.set(0, 10, 0); //前面に配置
-  mask.rotation.y = Math.PI / 4; //回転
-  scene.add(mask);
-  */
-
-  //背景
-  const sceneWidth = camera.right - camera.left;
-  const sceneHeight = camera.top - camera.bottom;
-  const boxWidth = sceneWidth * width;
-  const boxHeight = sceneHeight * height;
-
-  const geometry = new THREE.BoxGeometry(boxWidth, 1, boxHeight);
-  const material = new THREE.MeshBasicMaterial({ color: 0xffffff });
-  const mask = new THREE.Mesh(geometry, material);
-  mask.position.set(0, -100, 0); //背面に配置
-  scene.add(mask);
+  const texts = createText(scene, flower, text);
+  const texts2 = createText(scene, flower2, text);
+  const texts3 = createText(scene, flower3, text);
+  const texts4 = createText(scene, flower4, text);
 
   //画面全体の大きさの変更(調整用)
   const scaleFactor = 3;
@@ -205,10 +255,10 @@ export const init = (renderer: THREE.WebGLRenderer) => {
   //アニメーション
   animateTree(0, treeMixer, scene, camera, renderer);
   if (renderColor) {
-    animate(0, clock, flower, mixers, scene, camera, renderer);
-    animate(0, clock, flower2, mixers, scene, camera, renderer);
-    animate(0, clock, flower3, mixers, scene, camera, renderer);
-    animate(0, clock, flower4, mixers, scene, camera, renderer);
+    animate(0, clock, flower, mixers, scene, camera, renderer, texts);
+    animate(0, clock, flower2, mixers, scene, camera, renderer, texts2);
+    animate(0, clock, flower3, mixers, scene, camera, renderer, texts3);
+    animate(0, clock, flower4, mixers, scene, camera, renderer, texts4);
   } else {
     grayScaleAnimate(0, flower, mixers, composer);
   }
@@ -233,4 +283,19 @@ export const init = (renderer: THREE.WebGLRenderer) => {
 
   // リサイズイベントリスナーの設定
   window.addEventListener("resize", onWindowResize, false);
+};
+
+export const init = (renderer: THREE.WebGLRenderer) => {
+  //背景
+  const backWidth = (camera.right - camera.left) * width;
+  const backHeight = (camera.top - camera.bottom) * height;
+  const geometryBack = new THREE.BoxGeometry(backWidth, 1, backHeight);
+  const materialBack = new THREE.MeshBasicMaterial({ color: 0x000000 });
+  const backg = new THREE.Mesh(geometryBack, materialBack);
+  backg.position.set(0, -100, 0); //背面に配置
+  scene.add(backg);
+
+  setTimeout(() => {
+    initialize(renderer);
+  }, 2000);
 };

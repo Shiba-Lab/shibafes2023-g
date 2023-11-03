@@ -23,12 +23,12 @@ export const ThreeJSComponent = () => {
 
   return (
     <div>
+      <div ref={ref} />
       <div className={styles.fullscreencontainer}>
         <button id="fullscreen-btn" className={styles.fullscreenBtn}>
-          Go Fullscreen
+          FullScreen
         </button>
       </div>
-      <div ref={ref} />
     </div>
   );
 };

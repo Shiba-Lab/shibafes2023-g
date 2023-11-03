@@ -1,6 +1,9 @@
 import * as THREE from "three";
 
-export const attachMaterial = (model: THREE.Object3D, material: THREE.Material) => {
+export const attachMaterial = (
+  model: THREE.Object3D,
+  material: THREE.Material,
+) => {
   // モデル内のすべてのメッシュを走査して、新しいマテリアルを適用
   model.traverse((child) => {
     if (
@@ -10,7 +13,7 @@ export const attachMaterial = (model: THREE.Object3D, material: THREE.Material) 
     ) {
       child.material = material.clone();
     } else {
-      console.error("モーフの情報が存在しません");
+      //console.error("モーフの情報が存在しません");
     }
   });
 };
