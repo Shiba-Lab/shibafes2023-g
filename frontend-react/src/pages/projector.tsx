@@ -10,7 +10,6 @@ const Page = () => {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [uuid, setUuid] = React.useState('');
-  const [animationStarted, setAnimationStarted] = React.useState(false);
 
     // {/* WebSocket のインスタンスを保持する。 */}
   const ws = React.useRef<WebSocket | null>(null);
@@ -44,7 +43,6 @@ const Page = () => {
           break;
         case "prePlay":
           setPlayTime(obj.startTime);
-          drawAtDate();
           break;
 
       }
@@ -54,20 +52,6 @@ const Page = () => {
     }
   }, [])
 
-  const drawAtDate = () => {
-
-    if (playTime === null) {
-      return;
-    }
-
-    const delay = playTime - Date.now();
-    console.log(delay);
-
-    setTimeout(() => {
-      setAnimationStarted(true);
-    }, delay);
-  }
-
   return (
     <div>
       <h1> Projector </h1>
@@ -75,11 +59,7 @@ const Page = () => {
     {playTime === null ? (
         <p> None </p>
       ) : (
-        animationStarted ? (
-          <ThreeJSComponent waitUntil={1000}/>
-        ) : (
-          <p>{playTime}</p>
-        )
+        <ThreeJSComponent waitUntil={playTime - Date.now()}/>
       
     )}
   </div>
