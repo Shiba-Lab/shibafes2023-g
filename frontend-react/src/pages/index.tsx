@@ -3,6 +3,7 @@ import Head from "next/head";
 import QRCode from 'qrcode';
 import React from "react"
 import { SERVER_URL } from "../components/websocketUtils/utils"
+import { ThreeJSComponent } from "@/components/mainCanvas";
 
 const ROLE = "phone";
 
@@ -11,6 +12,7 @@ export default function Home() {
   const [playTime, setPlayTime] = React.useState(null);
   const [uuid, setUuid] = React.useState('');
   const [qrCodeURL, setQRCodeURL] = React.useState(null);
+  const [animationStarted, setAnimationStarted] = React.useState(false);
 
   // {/* WebSocket のインスタンスを保持する。 */}
   const ws = React.useRef<WebSocket | null>(null);
@@ -44,6 +46,7 @@ export default function Home() {
           break;
         case "prePlay":
           setPlayTime(obj.startTime);
+          drawAtDate();
           break;
       }
     }
@@ -174,6 +177,19 @@ export default function Home() {
     )
   }
 
+  const drawAtDate = () => {
+
+    if (playTime === null) {
+      return;
+    }
+
+    const delay = playTime - Date.now();
+
+    setTimeout(() => {
+      setAnimationStarted(true);
+    }, delay);
+  }
+
   return (
     <>
       <Head>
@@ -192,7 +208,11 @@ export default function Home() {
             playTime === null ? (
               <img src={qrCodeURL} alt="Generated QR Code" />
             ) : (
-              <p>{playTime}</p>
+              animationStarted ? (
+                <ThreeJSComponent />
+              ) : (
+                <p>{playTime}</p>
+              )
             )
           )}
         </div>
