@@ -38,7 +38,6 @@ export const loadTree = (
 
       // アニメーションが終了したら呼ばれるイベント
       action.getClip().duration; // アニメーションの長さを取得
-
       mixer.addEventListener("finished", (e) => {
         if (e.action === action) {
           setTimeout(() => {
