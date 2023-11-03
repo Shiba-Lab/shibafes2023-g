@@ -74,7 +74,7 @@ const Page = () => {
         <p> None </p>
       ) : (
         animationStarted ? (
-          <ThreeJSComponent />
+          <ThreeJSComponent waitUntil={1000}/>
         ) : (
           <p>{playTime}</p>
         )
