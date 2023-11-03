@@ -8,10 +8,11 @@ export const createText = (
   scene: THREE.Scene,
   flowers: Flower[],
   text: string,
+  fontpath: string,
 ) => {
   const textMeshs: THREE.Mesh[] = new Array(flowers.length);
   const textLoader = new FontLoader();
-  textLoader.load("./fonts/helv.json", (font) => {
+  textLoader.load(fontpath, (font) => {
     flowers.forEach((flower) => {
       const textGeo: TextGeometry = new TextGeometry(text, {
         size: 0.5,
