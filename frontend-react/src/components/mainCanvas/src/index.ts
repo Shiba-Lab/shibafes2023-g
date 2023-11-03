@@ -15,7 +15,7 @@ import { Flower } from "./types/FlowerType";
 const initialize = (renderer: THREE.WebGLRenderer) => {
   /*入力される変数管理*/
   //白黒にするかどうかの変数
-  const renderColor = true; //0ならグレースケール、1ならカラー
+  const renderColor = true; //0ならグレースケール、1ならカラー(現在グレースケールフィルター使用不可)
   //スマホ画面かそれ以外か
   const wrapperScreen = true;
   //花のインプット関係
@@ -31,9 +31,9 @@ const initialize = (renderer: THREE.WebGLRenderer) => {
   const fontnum = 2; //フォントを何使うか
 
   //スマホ画面用の設定
-  const sumaho = new THREE.BoxGeometry(0.45, 2, 1); //スマホの画面の大きさと位置(プロジェクター用)
-  const sumaho2 = new THREE.Vector3(0, 0, 4); //位置
-  const screenRatio = 0.17; //拡大(縮小)
+  const sumaho = new THREE.BoxGeometry(0.3, 2, 0.6); //スマホの画面の大きさと位置(プロジェクター用)
+  const sumaho2 = new THREE.Vector3(0, 0, 5); //位置
+  const screenRatio = 0.17; //拡大(縮小
 
   //カメラの回転量
   const cameraRotation = 0;

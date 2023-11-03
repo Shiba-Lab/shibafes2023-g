@@ -6,7 +6,7 @@ import styles from "./src/style/fullbutton.module.css";
 // number 型の waitUntil を含む type
 type Props = {
   waitUntil: number;
-}
+};
 
 export const ThreeJSComponent: React.FC<Props> = (props: Props) => {
   const ref = useRef<HTMLDivElement>(null);
@@ -24,7 +24,7 @@ export const ThreeJSComponent: React.FC<Props> = (props: Props) => {
     renderer.setSize(window.innerWidth, window.innerHeight);
     canvas.appendChild(renderer.domElement);
     init(renderer, props.waitUntil);
-  }, []);
+  });
 
   return (
     <div style={{ backgroundColor: "black", minHeight: "100vh" }}>
