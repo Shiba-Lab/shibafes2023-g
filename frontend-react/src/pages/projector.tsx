@@ -1,12 +1,14 @@
 import React from "react";
+import { ThreeJSComponent } from "../components/mainCanvas/index";
 import { SERVER_URL } from "../components/websocketUtils/utils";
-import { ThreeJSComponent } from "@/components/mainCanvas";
 
 const ROLE = "projector";
 
 const Page = () => {
 
   const [playTime, setPlayTime] = React.useState(null);
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [uuid, setUuid] = React.useState('');
   const [animationStarted, setAnimationStarted] = React.useState(false);
 
