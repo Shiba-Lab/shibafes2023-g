@@ -17,13 +17,15 @@ export const init = (renderer: THREE.WebGLRenderer) => {
 
   //時間
   const clock = new THREE.Clock();
-  const flowerDelta: number = 5000; //花が咲くまでの時間(木が生える時間)
+  const flowerDelta: number = 3000; //花が咲くまでの時間(木が生える時間)
 
   // サイズを指定
-  const width = 960;
-  const height = 540;
+  const width = window.innerWidth;
+  const height = window.innerHeight;
+  const magnification = 140; //全体の大きさを変更
 
   //GLTFのファイルパスを格納
+  const fileindex: number = 0;
   const treeFilePath = "./treeGltf/treeMesh.gltf";
   const flowerModelsFilePath: string[] = [];
   flowerModelsFilePath[0] = "./flowerGltf/flowerCosmos.gltf"; //1個目の花のモデル
@@ -34,15 +36,30 @@ export const init = (renderer: THREE.WebGLRenderer) => {
   //通常のレンダリング用(カラー)
   const scene = new THREE.Scene(); // シーンを作成
   const camera = new THREE.OrthographicCamera(
-    -width / 100,
-    width / 100,
-    height / 100,
-    -height / 100,
+    -width / magnification,
+    width / magnification,
+    height / magnification,
+    -height / magnification,
     0.1,
     1000,
   ); // カメラを作成(並行投影)
   camera.position.set(0, 15, 0);
   camera.lookAt(new THREE.Vector3(0, 0, 0));
+
+  //フルスクリーン
+  const fullscreenButton = document.getElementById("fullscreen-btn");
+  const goFullScreen = () => {
+    const canvas = renderer.domElement;
+
+    if (canvas.requestFullscreen) {
+      canvas.requestFullscreen();
+    }
+  };
+  if (fullscreenButton !== null) {
+    fullscreenButton.addEventListener("click", function () {
+      goFullScreen();
+    });
+  }
 
   //グレースケール用のレンダリング用のシェーダ、およびシェーダーパスの作成
   const grayscaleShader = {
@@ -91,12 +108,12 @@ export const init = (renderer: THREE.WebGLRenderer) => {
   //フラワーの作成
   const flower: Flower[] = createFlower(
     10, //数
-    0, //原点x
-    0, //原点y
-    10, //半径
-    0.5, //大きさみん
-    3, //大きさまっくす
-    0, //大きさ
+    -2.2, //原点x
+    -1, //原点y
+    2.5, //半径
+    0.3, //大きさみん
+    1, //大きさまっくす
+    0.6, //大きさ
     flowerDelta + 4000,
     new THREE.Color("rgb(255, 200, 100)"),
     new THREE.Color("rgb(100, 200, 255)"),
@@ -104,20 +121,48 @@ export const init = (renderer: THREE.WebGLRenderer) => {
 
   const flower2: Flower[] = createFlower(
     10, //数
-    0, //原点x
-    0, //原点y
-    10, //半径
-    0.5, //大きさみん
-    3, //大きさまっくす
-    1, //大きさ
-    flowerDelta + 2000, // 木が生え切るまで
+    2, //原点x
+    -0.5, //原点y
+    1.8, //半径
+    0.3, //大きさみん
+    1, //大きさまっくす
+    0.5, //大きさ
+    flowerDelta + 4000,
+    new THREE.Color("rgb(255, 200, 100)"),
+    new THREE.Color("rgb(100, 200, 255)"),
+  );
+
+  const flower3: Flower[] = createFlower(
+    7, //数
+    1.7, //原点x
+    -3.5, //原点y
+    1.2, //半径
+    0.3, //大きさみん
+    1, //大きさまっくす
+    0.3, //大きさ
+    flowerDelta + 4000,
+    new THREE.Color("rgb(255, 200, 100)"),
+    new THREE.Color("rgb(100, 200, 255)"),
+  );
+
+  const flower4: Flower[] = createFlower(
+    6, //数
+    -1.7, //原点x
+    -4.5, //原点y
+    1.3, //半径
+    0.3, //大きさみん
+    1, //大きさまっくす
+    0.3, //大きさ
+    flowerDelta + 4000,
     new THREE.Color("rgb(255, 200, 100)"),
     new THREE.Color("rgb(100, 200, 255)"),
   );
 
   //モデルのロード
-  loadModel(flowerModelsFilePath[0], loader, scene, mixers, flower);
-  loadModel(flowerModelsFilePath[3], loader, scene, mixers, flower2);
+  loadModel(flowerModelsFilePath[fileindex], loader, scene, mixers, flower);
+  loadModel(flowerModelsFilePath[fileindex], loader, scene, mixers, flower2);
+  loadModel(flowerModelsFilePath[fileindex], loader, scene, mixers, flower3);
+  loadModel(flowerModelsFilePath[fileindex], loader, scene, mixers, flower4);
   loadTree(treeFilePath, treeLoader, scene, treeMixer);
 
   //マスク(黒い板を配置しているだけ)
@@ -137,12 +182,55 @@ export const init = (renderer: THREE.WebGLRenderer) => {
   scene.add(mask);
   */
 
+  //背景
+  const sceneWidth = camera.right - camera.left;
+  const sceneHeight = camera.top - camera.bottom;
+  const boxWidth = sceneWidth * width;
+  const boxHeight = sceneHeight * height;
+
+  const geometry = new THREE.BoxGeometry(boxWidth, 1, boxHeight);
+  const material = new THREE.MeshBasicMaterial({ color: 0xffffff });
+  const mask = new THREE.Mesh(geometry, material);
+  mask.position.set(0, -100, 0); //背面に配置
+  scene.add(mask);
+
+  //画面全体の大きさの変更(調整用)
+  const scaleFactor = 3;
+  scene.traverse((object) => {
+    if (object instanceof THREE.Mesh) {
+      object.scale.multiplyScalar(scaleFactor);
+    }
+  });
+
   //アニメーション
   animateTree(0, treeMixer, scene, camera, renderer);
   if (renderColor) {
     animate(0, clock, flower, mixers, scene, camera, renderer);
     animate(0, clock, flower2, mixers, scene, camera, renderer);
+    animate(0, clock, flower3, mixers, scene, camera, renderer);
+    animate(0, clock, flower4, mixers, scene, camera, renderer);
   } else {
     grayScaleAnimate(0, flower, mixers, composer);
   }
+
+  // リサイズイベント
+  const onWindowResize = () => {
+    // ウィンドウサイズに合わせてカメラとレンダラーを更新
+    // オーソグラフィックカメラのスケールを更新
+    const aspect = window.innerWidth / window.innerHeight;
+    const frustumHeight = camera.top - camera.bottom;
+    camera.left = (frustumHeight * aspect) / -2;
+    camera.right = (frustumHeight * aspect) / 2;
+    camera.top = frustumHeight / 2;
+    camera.bottom = frustumHeight / -2;
+
+    // プロジェクションマトリックスを更新
+    camera.updateProjectionMatrix();
+
+    // レンダラーのサイズを更新
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  };
+
+  // リサイズイベントリスナーの設定
+  window.addEventListener("resize", onWindowResize, false);
 };

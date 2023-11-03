@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import * as THREE from "three";
 import { init } from "./src";
+import styles from "./src/style/fullbutton.module.css";
 
 export const ThreeJSComponent = () => {
   const ref = useRef<HTMLDivElement>(null);
@@ -20,5 +21,14 @@ export const ThreeJSComponent = () => {
     init(renderer);
   }, []);
 
-  return <div ref={ref} />;
+  return (
+    <div>
+      <div className={styles.fullscreencontainer}>
+        <button id="fullscreen-btn" className={styles.fullscreenBtn}>
+          Go Fullscreen
+        </button>
+      </div>
+      <div ref={ref} />
+    </div>
+  );
 };
