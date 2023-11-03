@@ -22,19 +22,22 @@ const initialize = (renderer: THREE.WebGLRenderer) => {
   const inputFlowerNum = 10;
   const inputFlowerMin = 0.3;
   const inputFlowerMax = 1;
+
+  //色管理
+  const color1: THREE.Color = new THREE.Color("rgb(255, 200, 100)");
+  const color2: THREE.Color = new THREE.Color("rgb(100, 200, 255)");
   //テキスト
-  const text: string = "Adobe";
-  const fontnum = 1; //フォントを何使うか
+  const text: string = "Text";
+  const fontnum = 2; //フォントを何使うか
 
   //スマホ画面用の設定
   const sumaho = new THREE.BoxGeometry(0.45, 2, 1); //スマホの画面の大きさと位置(プロジェクター用)
   const sumaho2 = new THREE.Vector3(0, 0, 4); //位置
-  const screenRatio = 0.2; //拡大
+  const screenRatio = 0.17; //拡大(縮小)
 
   //カメラの回転量
   const cameraRotation = 0;
 
-  //
   //
   //
   //時間
@@ -59,6 +62,7 @@ const initialize = (renderer: THREE.WebGLRenderer) => {
   const fontPath: string[] = [];
   fontPath[0] = "./fonts/helv.json";
   fontPath[1] = "./fonts/gentilis_regular.typeface.json";
+  fontPath[2] = "./fonts/optimer_regular.typeface.json";
 
   //レンダリング用
   const scene = new THREE.Scene(); // シーンを作成
@@ -195,8 +199,8 @@ const initialize = (renderer: THREE.WebGLRenderer) => {
     inputFlowerMax, //大きさまっくす
     0.6, //大きさ
     flowerDelta + 4000,
-    new THREE.Color("rgb(255, 200, 100)"),
-    new THREE.Color("rgb(100, 200, 255)"),
+    color1,
+    color2,
   );
 
   const flower2: Flower[] = createFlower(
@@ -208,8 +212,8 @@ const initialize = (renderer: THREE.WebGLRenderer) => {
     inputFlowerMax, //大きさまっくす
     0.5, //大きさ
     flowerDelta + 4000,
-    new THREE.Color("rgb(255, 200, 100)"),
-    new THREE.Color("rgb(100, 200, 255)"),
+    color1,
+    color2,
   );
 
   const flower3: Flower[] = createFlower(
@@ -221,8 +225,8 @@ const initialize = (renderer: THREE.WebGLRenderer) => {
     inputFlowerMax, //大きさまっくす
     0.3, //大きさ
     flowerDelta + 4000,
-    new THREE.Color("rgb(255, 200, 100)"),
-    new THREE.Color("rgb(100, 200, 255)"),
+    color1,
+    color2,
   );
 
   const flower4: Flower[] = createFlower(
@@ -234,8 +238,8 @@ const initialize = (renderer: THREE.WebGLRenderer) => {
     inputFlowerMax, //大きさまっくす
     0.3, //大きさ
     flowerDelta + 4000,
-    new THREE.Color("rgb(255, 200, 100)"),
-    new THREE.Color("rgb(100, 200, 255)"),
+    color1,
+    color2,
   );
 
   //モデルのロード
@@ -268,14 +272,17 @@ const initialize = (renderer: THREE.WebGLRenderer) => {
   });
 
   //アニメーション
-  animateTree(0, treeMixer, scene, camera, renderer);
   if (renderColor) {
+    animateTree(0, treeMixer, scene, camera, renderer);
     animate(0, clock, flower, mixers, scene, camera, renderer, texts);
     animate(0, clock, flower2, mixers, scene, camera, renderer, texts2);
     animate(0, clock, flower3, mixers, scene, camera, renderer, texts3);
     animate(0, clock, flower4, mixers, scene, camera, renderer, texts4);
   } else {
     grayScaleAnimate(0, flower, mixers, composer);
+    grayScaleAnimate(0, flower2, mixers, composer);
+    grayScaleAnimate(0, flower3, mixers, composer);
+    grayScaleAnimate(0, flower4, mixers, composer);
   }
 
   // リサイズイベント
