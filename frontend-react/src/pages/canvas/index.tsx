@@ -4,7 +4,7 @@ import { ThreeJSComponent } from "../../components/mainCanvas/index";
 const Canvas = () => {
   return (
     <Box w="100%" h="100%">
-      <ThreeJSComponent waitUntil={5000} flowerData={{
+      <ThreeJSComponent waitUntil={5000} isScreen={true} flowerData={{
         flowerText: "TEST",
         flowerNum: 10,
         flowerMin: 0.1,
