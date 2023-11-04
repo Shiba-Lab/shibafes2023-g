@@ -82,7 +82,9 @@ const Page = () => {
       ) : (
         flower && playTime && <>
           <ThreeJSComponent isScreen={true} waitUntil={playTime - Date.now()} flowerData={flower!} />
-          <Button onClick={() => {setPlayTime(null)}}/>
+          <Button onClick={() => {setPlayTime(null)}}>
+            Reconnect
+          </Button>
         </>
     )}
   </div>
