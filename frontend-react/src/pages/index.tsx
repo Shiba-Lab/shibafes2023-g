@@ -2,6 +2,7 @@ import { Box, Button, Container, FormControl, FormLabel, Heading, Input, Slider,
 import Head from "next/head";
 import QRCode from 'qrcode';
 import React from "react"
+import ReconnectingWebSocket from 'reconnecting-websocket';
 import { ThreeJSComponent } from "../components/mainCanvas/index";
 import { FlowerData } from "../components/mainCanvas/src/index";
 import { SERVER_URL } from "../components/websocketUtils/utils"
@@ -23,11 +24,11 @@ export default function Home() {
   });
 
   // {/* WebSocket のインスタンスを保持する。 */}
-  const ws = React.useRef<WebSocket | null>(null);
+  const ws = React.useRef<ReconnectingWebSocket | null>(null);
 
   // {/* WebSocket を開く。 一度開いたら、ページを閉じるまで開きっぱなしにする。*/}
   React.useEffect(() => {
-    ws.current = new WebSocket(SERVER_URL);
+    ws.current = new ReconnectingWebSocket(SERVER_URL);
     ws.current.onopen = () => {
       console.log('ws opened');
     }

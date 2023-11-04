@@ -1,4 +1,5 @@
 import React from "react";
+import ReconnectingWebSocket from 'reconnecting-websocket';
 import { ThreeJSComponent } from "../components/mainCanvas/index";
 import { FlowerData } from "../components/mainCanvas/src";
 import { SERVER_URL } from "../components/websocketUtils/utils";
@@ -13,7 +14,7 @@ const Page = () => {
   const [uuid, setUuid] = React.useState('');
 
     // {/* WebSocket のインスタンスを保持する。 */}
-  const ws = React.useRef<WebSocket | null>(null);
+  const ws = React.useRef<ReconnectingWebSocket | null>(null);
 
   const [flower, setFlower] = React.useState<FlowerData>({
     flowerText: "TEST",
@@ -26,7 +27,7 @@ const Page = () => {
 
   // {/* WebSocket を開く。 一度開いたら、ページを閉じるまで開きっぱなしにする。*/}
   React.useEffect(() => {
-    ws.current = new WebSocket(SERVER_URL);
+    ws.current = new ReconnectingWebSocket(SERVER_URL);
     ws.current.onopen = () => {
       console.log('ws opened');
     }
