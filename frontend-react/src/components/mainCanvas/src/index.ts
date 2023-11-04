@@ -12,22 +12,31 @@ import { loadModel } from "./loadModel";
 import { loadTree } from "./loadTree";
 import { Flower } from "./types/FlowerType";
 
-const initialize = (renderer: THREE.WebGLRenderer) => {
+export type FlowerData = {
+  flowerText: string,
+  flowerNum: number,
+  flowerMin: number,
+  flowerMax: number,
+  color1: string, // "rgb(255, 200, 100)"
+  color2: string,
+}
+
+const initialize = (renderer: THREE.WebGLRenderer, data: FlowerData) => {
   /*入力される変数管理*/
   //白黒にするかどうかの変数
   const renderColor = true; //0ならグレースケール、1ならカラー
   //スマホ画面かそれ以外か
   const wrapperScreen = true;
   //花のインプット関係
-  const inputFlowerNum = 10;
-  const inputFlowerMin = 0.3;
-  const inputFlowerMax = 1;
+  const inputFlowerNum = data.flowerNum;
+  const inputFlowerMin = data.flowerMin;
+  const inputFlowerMax = data.flowerMax;
 
   //色管理
-  const color1: THREE.Color = new THREE.Color("rgb(255, 200, 100)");
-  const color2: THREE.Color = new THREE.Color("rgb(100, 200, 255)");
+  const color1: THREE.Color = new THREE.Color(data.color1);
+  const color2: THREE.Color = new THREE.Color(data.color2);
   //テキスト
-  const text: string = "Text";
+  const text: string = data.flowerText;
   const fontnum = 2; //フォントを何使うか
 
   //スマホ画面用の設定
@@ -307,8 +316,8 @@ const initialize = (renderer: THREE.WebGLRenderer) => {
   window.addEventListener("resize", onWindowResize, false);
 };
 
-export const init = (renderer: THREE.WebGLRenderer, waitUntil: number) => {
+export const init = (renderer: THREE.WebGLRenderer, waitUntil: number, data: FlowerData) => {
   setTimeout(() => {
-    initialize(renderer);
+    initialize(renderer, data);
   }, waitUntil);
 };

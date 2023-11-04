@@ -3,6 +3,7 @@ import Head from "next/head";
 import QRCode from 'qrcode';
 import React from "react"
 import { ThreeJSComponent } from "../components/mainCanvas/index";
+import { FlowerData } from "../components/mainCanvas/src/index";
 import { SERVER_URL } from "../components/websocketUtils/utils"
 
 const ROLE = "phone";
@@ -12,6 +13,14 @@ export default function Home() {
   const [playTime, setPlayTime] = React.useState(null);
   const [uuid, setUuid] = React.useState('');
   const [qrCodeURL, setQRCodeURL] = React.useState<string | null>(null);
+  const [flower, setFlower] = React.useState<FlowerData>({
+    flowerText: "TEST",
+    flowerNum: 10,
+    flowerMin: 0.1,
+    flowerMax: 0.6,
+    color1: "rgb(255, 200, 100)",
+    color2: "rgb(0, 200, 100)",
+  });
 
   // {/* WebSocket のインスタンスを保持する。 */}
   const ws = React.useRef<WebSocket | null>(null);
@@ -45,6 +54,16 @@ export default function Home() {
           break;
         case "prePlay":
           setPlayTime(obj.startTime);
+
+          setFlower({
+            flowerText: obj.flowerText,
+            flowerNum:  parseFloat(obj.flowerCount),
+            flowerMin:  parseFloat(obj.flowerSizeRange[0]),
+            flowerMax:  parseFloat(obj.flowerSizeRange[1]),
+            color1:     obj.flowerColor[0],
+            color2:     obj.flowerColor[1],
+          })
+
           break;
       }
     }
@@ -85,16 +104,20 @@ export default function Home() {
             const flowerSizeMax = (form.elements.namedItem("flowerSizeMax") as HTMLInputElement).value;
             const flowerColor1  = (form.elements.namedItem("color1") as HTMLInputElement).value;
             const flowerColor2  = (form.elements.namedItem("color2")   as HTMLInputElement).value;
+            const nickname      = (form.elements.namedItem("nickname")   as HTMLInputElement).value;
 
 
             ws.current?.send(JSON.stringify({
               uuid: uuid,
               role: ROLE,
               type: "sendFlowerData",
+              flowerText: nickname,
               flowerCount: flowerCount,
               flowerSizeRange: [flowerSizeMin, flowerSizeMax],
               flowerColor: [flowerColor1, flowerColor2],
             }));
+
+            console.log("flowerCount: ", flowerCount);
 
             // 自身の uuid の QR コードを生成
             generateQR();
@@ -126,7 +149,7 @@ export default function Home() {
             {/* 花弁の大きさ */}
             <Box py={4}>
               <FormLabel>花弁の大きさ (最小)</FormLabel>
-              <Slider defaultValue={30} min={10} max={100} step={1} name="flowerSizeMin">
+              <Slider defaultValue={0.1} min={0.01} max={1.00} step={0.01} name="flowerSizeMin">
                 <SliderMark value={10} {...labelStyles}>
                   10
                 </SliderMark>
@@ -143,7 +166,7 @@ export default function Home() {
   
             <Box py={4}>
               <FormLabel>花弁の大きさ (最大)</FormLabel>
-              <Slider defaultValue={60} min={10} max={100} step={1} name="flowerSizeMax">
+              <Slider defaultValue={0.6} min={0.01} max={1.00} step={0.01} name="flowerSizeMax">
                 <SliderMark value={10} {...labelStyles}>
                   10
                 </SliderMark>
@@ -171,6 +194,11 @@ export default function Home() {
               <FormLabel>花の色 (終点)</FormLabel>
               <Input type="color" name="color2"/>
             </Box>
+
+            <Box py={4}>
+              <FormLabel>ニックネーム</FormLabel>
+              <Input type="text" name="nickname"/>
+            </Box>
           </FormControl>
   
           <Container centerContent>
@@ -193,15 +221,14 @@ export default function Home() {
       </Head>
       <main>
         <div>
-          <h1> Phone </h1>
           {/* qrCodeURL が null だったら FormWithHandler, そうでなければ OK を表示する。 */}
           {qrCodeURL === null ? (
             <FormWithHandler />
           ) : (
-            playTime === null ? (
+            playTime === null && flower !== null ? (
               <img src={qrCodeURL} alt="Generated QR Code" />
             ) : (
-              <ThreeJSComponent waitUntil={playTime - Date.now()} />
+              flower && playTime && <ThreeJSComponent waitUntil={playTime - Date.now()} flowerData={flower!} />
             )
           )}
         </div>
