@@ -1,3 +1,4 @@
+import { Button } from "@chakra-ui/react";
 import React from "react";
 import ReconnectingWebSocket from 'reconnecting-websocket';
 import { ThreeJSComponent } from "../components/mainCanvas/index";
@@ -75,13 +76,14 @@ const Page = () => {
 
   return (
     <div>
-      <h1> Projector </h1>
     {/* qrCodeURL が null だったら FormWithHandler, そうでなければ OK を表示する。 */}
     {playTime === null ? (
         <p> None </p>
       ) : (
-        flower && playTime && <ThreeJSComponent isScreen={true} waitUntil={playTime - Date.now()} flowerData={flower!} />
-      
+        flower && playTime && <>
+          <ThreeJSComponent isScreen={true} waitUntil={playTime - Date.now()} flowerData={flower!} />
+          <Button onClick={() => {setPlayTime(null)}}/>
+        </>
     )}
   </div>
   );
