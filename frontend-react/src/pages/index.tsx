@@ -228,7 +228,7 @@ export default function Home() {
             playTime === null && flower !== null ? (
               <img src={qrCodeURL} alt="Generated QR Code" />
             ) : (
-              flower && playTime && <ThreeJSComponent isScreen={true} waitUntil={playTime - Date.now()} flowerData={flower!} />
+              flower && playTime && <ThreeJSComponent isScreen={false} waitUntil={playTime - Date.now()} flowerData={flower!} />
             )
           )}
         </div>
