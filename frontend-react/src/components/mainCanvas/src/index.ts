@@ -40,11 +40,11 @@ const initialize = (renderer: THREE.WebGLRenderer, isScreen: boolean, data: Flow
   const fontnum = 2; //フォントを何使うか
 
   //スマホ画面用の設定
-  const sumaho = new THREE.BoxGeometry(0.45, 2, 1); //スマホの画面の大きさと位置(プロジェクター用)
+  const sumaho = new THREE.BoxGeometry(0.20, 2, 0.4); //スマホの画面の大きさと位置(プロジェクター用)
 
 
   const sumaho2 = new THREE.Vector3(0, 0, 4); //位置
-  const screenRatio = 0.17; //拡大(縮小)
+  const screenRatio = 0.10; //拡大(縮小)
 
   //カメラの回転量
   const cameraRotation = 0;
@@ -58,7 +58,7 @@ const initialize = (renderer: THREE.WebGLRenderer, isScreen: boolean, data: Flow
   // 画面サイズを指定
   const width = window.innerWidth;
   const height = window.innerHeight;
-  const magnification = 120; //全体の大きさを変更
+  const magnification = 250; //全体の大きさを変更
 
   //GLTFのファイルパスを格納
   const fileindex: number = 0;
