@@ -188,23 +188,23 @@ export default function Home() {
             {/* 色選択 */}
             <Box py={4}>
               <FormLabel>花の色 (始点)</FormLabel>
-              <Input type="color" name="color1"/>
+              <Input type="color" defaultValue="#c0ffee" name="color1"/>
             </Box>
 
             <Box py={4}>
               <FormLabel>花の色 (終点)</FormLabel>
-              <Input type="color" name="color2"/>
+              <Input type="color" defaultValue="#cf00ee" name="color2"/>
             </Box>
 
             <Box py={4}>
-              <FormLabel>ニックネーム</FormLabel>
+              <FormLabel>ニックネーム (アルファベットで) </FormLabel>
               <Input type="text" name="nickname"/>
             </Box>
           </FormControl>
   
-          <Container centerContent>
+          <Container centerContent py={16}>
             <Button type="submit" colorScheme="blue">
-              Button
+              Submit
             </Button>
           </Container>
         </form>
@@ -227,7 +227,10 @@ export default function Home() {
             <FormWithHandler />
           ) : (
             playTime === null && flower !== null ? (
-              <img src={qrCodeURL} alt="Generated QR Code" />
+              <img src={qrCodeURL} alt="Generated QR Code" style={{
+                margin: "auto",
+                width: "100%",  // スマホは縦長なので横に合わせれば OK
+              }} />
             ) : (
               flower && playTime && <ThreeJSComponent isScreen={false} waitUntil={playTime - Date.now()} flowerData={flower!} />
             )
