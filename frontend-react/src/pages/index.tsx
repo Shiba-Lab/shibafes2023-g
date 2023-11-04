@@ -129,7 +129,7 @@ export default function Home() {
           </Heading>
           <FormControl>
             {/* 花の数 */}
-            <Box py={4}>
+            <Box py={4} display="none">
               <FormLabel>花の咲く数</FormLabel>
               <Slider min={10} max={100} step={1} name="flowerCount">
                 <SliderMark value={10} {...labelStyles}>
@@ -147,7 +147,7 @@ export default function Home() {
             </Box>
   
             {/* 花弁の大きさ */}
-            <Box py={4}>
+            <Box py={4} display="none">
               <FormLabel>花弁の大きさ (最小)</FormLabel>
               <Slider defaultValue={0.1} min={0.01} max={1.00} step={0.01} name="flowerSizeMin">
                 <SliderMark value={10} {...labelStyles}>
@@ -164,7 +164,7 @@ export default function Home() {
               </Slider>
             </Box>
   
-            <Box py={4}>
+            <Box py={4} display="none">
               <FormLabel>花弁の大きさ (最大)</FormLabel>
               <Slider defaultValue={0.6} min={0.01} max={1.00} step={0.01} name="flowerSizeMax">
                 <SliderMark value={10} {...labelStyles}>
