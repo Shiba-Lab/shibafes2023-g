@@ -6,6 +6,7 @@ import styles from "./src/style/fullbutton.module.css";
 // number 型の waitUntil を含む type
 type Props = {
   waitUntil: number;
+  isScreen: boolean;
   flowerData: FlowerData;
 }
 
@@ -24,7 +25,7 @@ export const ThreeJSComponent: React.FC<Props> = (props: Props) => {
     renderer.setClearColor(0x000000, 0); //背景透過
     renderer.setSize(window.innerWidth, window.innerHeight);
     canvas.appendChild(renderer.domElement);
-    init(renderer, props.waitUntil, props.flowerData);
+    init(renderer, props.isScreen, props.waitUntil, props.flowerData);
   }, []);
 
   return (

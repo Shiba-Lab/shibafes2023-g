@@ -79,7 +79,7 @@ const Page = () => {
     {playTime === null ? (
         <p> None </p>
       ) : (
-        flower && playTime && <ThreeJSComponent waitUntil={playTime - Date.now()} flowerData={flower!} />
+        flower && playTime && <ThreeJSComponent isScreen={false} waitUntil={playTime - Date.now()} flowerData={flower!} />
       
     )}
   </div>

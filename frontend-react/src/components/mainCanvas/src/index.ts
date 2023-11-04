@@ -21,12 +21,12 @@ export type FlowerData = {
   color2: string,
 }
 
-const initialize = (renderer: THREE.WebGLRenderer, data: FlowerData) => {
+const initialize = (renderer: THREE.WebGLRenderer, isScreen: boolean, data: FlowerData) => {
   /*入力される変数管理*/
   //白黒にするかどうかの変数
   const renderColor = true; //0ならグレースケール、1ならカラー
   //スマホ画面かそれ以外か
-  const wrapperScreen = true;
+  const wrapperScreen = isScreen;
   //花のインプット関係
   const inputFlowerNum = data.flowerNum;
   const inputFlowerMin = data.flowerMin;
@@ -41,6 +41,8 @@ const initialize = (renderer: THREE.WebGLRenderer, data: FlowerData) => {
 
   //スマホ画面用の設定
   const sumaho = new THREE.BoxGeometry(0.45, 2, 1); //スマホの画面の大きさと位置(プロジェクター用)
+
+
   const sumaho2 = new THREE.Vector3(0, 0, 4); //位置
   const screenRatio = 0.17; //拡大(縮小)
 
@@ -316,8 +318,8 @@ const initialize = (renderer: THREE.WebGLRenderer, data: FlowerData) => {
   window.addEventListener("resize", onWindowResize, false);
 };
 
-export const init = (renderer: THREE.WebGLRenderer, waitUntil: number, data: FlowerData) => {
+export const init = (renderer: THREE.WebGLRenderer, isScreen: boolean, waitUntil: number, data: FlowerData) => {
   setTimeout(() => {
-    initialize(renderer, data);
+    initialize(renderer, isScreen, data);
   }, waitUntil);
 };
